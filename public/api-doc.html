@@ -1,0 +1,752 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Marketplace API Documentation</title>
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            line-height: 1.6;
+            margin: 0;
+            padding: 20px;
+            background-color: #f4f7f6;
+            color: #333;
+        }
+        .container {
+            max-width: 1200px;
+            margin: auto;
+            background: #fff;
+            padding: 30px;
+            border-radius: 8px;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+        }
+        h1, h2, h3 {
+            color: #2c3e50;
+            margin-top: 30px;
+            border-bottom: 2px solid #e0e0e0;
+            padding-bottom: 10px;
+        }
+        h1 {
+            text-align: center;
+            font-size: 2.8em;
+            color: #2980b9;
+        }
+        h2 {
+            font-size: 2.2em;
+            color: #34495e;
+        }
+        h3 {
+            font-size: 1.6em;
+            color: #34495e;
+        }
+        code {
+            background-color: #e8e8e8;
+            padding: 2px 4px;
+            border-radius: 4px;
+            font-family: 'Courier New', Courier, monospace;
+        }
+        pre {
+            background-color: #eee;
+            padding: 15px;
+            border-radius: 6px;
+            overflow-x: auto;
+        }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-bottom: 20px;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.05);
+        }
+        th, td {
+            border: 1px solid #ddd;
+            padding: 12px 15px;
+            text-align: left;
+        }
+        th {
+            background-color: #f0f0f0;
+            color: #333;
+            font-weight: bold;
+        }
+        tr:nth-child(even) {
+            background-color: #f9f9f9;
+        }
+        .method {
+            font-weight: bold;
+            padding: 3px 8px;
+            border-radius: 4px;
+            color: #fff;
+            display: inline-block;
+            min-width: 60px;
+            text-align: center;
+        }
+        .method.post { background-color: #27ae60; } /* Green */
+        .method.get { background-color: #3498db; }  /* Blue */
+        .method.put { background-color: #f39c12; }  /* Orange */
+        .method.delete { background-color: #e74c3c; } /* Red */
+        .info-box {
+            background-color: #eaf6fd;
+            border-left: 5px solid #3498db;
+            padding: 15px;
+            margin: 20px 0;
+            border-radius: 4px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Marketplace API Documentation 📚</h1>
+        <p>Ushbu hujjat sizning marketplace backend API'ngizning barcha mavjud yo'nalishlari, ularning maqsadlari, qabul qiladigan so'rovlari va qaytaradigan javoblari haqida ma'lumot beradi.</p>
+
+        <hr>
+
+        <h2>Asosiy URL (Base URL) 🌐</h2>
+        <p>Sizning API'ngizning barcha yo'nalishlari quyidagi asosiy URL manzilidan boshlanadi:</p>
+        <pre><code>http://localhost:5000/api</code></pre>
+        <div class="info-box">
+            <strong>Eslatma:</strong> Production (ishlab chiqarish) muhitida <code>localhost:5000</code> o'rniga sizning domen nomingiz ishlatiladi (masalan, <code>https://yourdomain.com/api</code>).
+        </div>
+
+        <hr>
+
+        <h2>Autentifikatsiya (Authentication) 🔐</h2>
+        <p>Sizning API'ngizning aksariyat yo'nalishlari <strong>JWT (JSON Web Token)</strong> asosidagi autentifikatsiyani talab qiladi. Kirishda (<code>/api/auth/login</code> yoki <code>/api/auth/register</code>) olingan token har bir himoyalangan so'rovning <code>Authorization</code> sarlavhasida <code>Bearer Token</code> sifatida yuborilishi kerak.</p>
+        <pre><code>Authorization: Bearer &lt;your_jwt_token&gt;</code></pre>
+
+        <hr>
+
+        <h2>API Yo'nalishlari (API Endpoints) 🚀</h2>
+
+        <h3>1. Autentifikatsiya Yo'nalishlari (<code>/api/auth</code>) 🔑</h3>
+        <p>Foydalanuvchilarni ro'yxatdan o'tkazish, kirish va parolni boshqarish uchun.</p>
+        <table>
+            <thead>
+                <tr>
+                    <th>Metod</th>
+                    <th>URL Yo'nalishi</th>
+                    <th>Tavsif</th>
+                    <th>So'rov (Request Body)</th>
+                    <th>Javob (Response Body)</th>
+                    <th>Eslatmalar</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td><span class="method post">POST</span></td>
+                    <td><code>/api/auth/register</code></td>
+                    <td>Yangi foydalanuvchini ro'yxatdan o'tkazish</td>
+                    <td><code>fullName</code>, <code>phoneNumber</code>, <code>password</code>, <code>status</code> (optional, default: <code>user</code>)</td>
+                    <td><code>id</code>, <code>fullName</code>, <code>phoneNumber</code>, <code>status</code>, <code>createdAt</code>, <code>token</code></td>
+                    <td><code>phoneNumber</code> unikal bo'lishi kerak.</td>
+                </tr>
+                <tr>
+                    <td><span class="method post">POST</span></td>
+                    <td><code>/api/auth/login</code></td>
+                    <td>Foydalanuvchi tizimga kirishi</td>
+                    <td><code>phoneNumber</code>, <code>password</code></td>
+                    <td><code>id</code>, <code>fullName</code>, <code>phoneNumber</code>, <code>status</code>, <code>token</code></td>
+                    <td></td>
+                </tr>
+                <tr>
+                    <td><span class="method post">POST</span></td>
+                    <td><code>/api/auth/logout</code></td>
+                    <td>Foydalanuvchi tizimdan chiqishi</td>
+                    <td><em>Yo'q</em></td>
+                    <td><code>{ "message": "Logged out successfully" }</code></td>
+                    <td>Tokenni bekor qiladi.</td>
+                </tr>
+                <tr>
+                    <td><span class="method post">POST</span></td>
+                    <td><code>/api/auth/token</code></td>
+                    <td>Refresh token orqali access token olish</td>
+                    <td><code>refreshToken</code></td>
+                    <td><code>{"accessToken": "new access token"}</code></td>
+                    <td>access token olinadi</td>
+                </tr>
+                <tr>
+                    <td><span class="method get">GET</span></td>
+                    <td><code>/api/auth/profile</code></td>
+                    <td>Joriy foydalanuvchi profilini olish</td>
+                    <td><em>Yo'q</em></td>
+                    <td>Foydalanuvchi obyektining to'liq ma'lumotlari</td>
+                    <td>Autentifikatsiyalangan foydalanuvchi.</td>
+                </tr>
+                <!-- <tr>
+                    <td><span class="method post">POST</span></td>
+                    <td><code>/api/auth/forgot-password</code></td>
+                    <td>Parolni tiklash uchun so'rov</td>
+                    <td><code>phoneNumber</code></td>
+                    <td><code>{ "message": "Reset token sent to phone" }</code></td>
+                    <td>SMS orqali token yuboriladi.</td>
+                </tr> -->
+                <!-- <tr>
+                    <td><span class="method put">PUT</span></td>
+                    <td><code>/api/auth/reset-password/:token</code></td>
+                    <td>Parolni tiklashni yakunlash</td>
+                    <td><code>newPassword</code></td>
+                    <td><code>{ "message": "Password reset successfully" }</code></td>
+                    <td>Token URLda bo'lishi kerak.</td>
+                </tr> -->
+            </tbody>
+        </table>
+
+        <h3>2. Foydalanuvchi Yo'nalishlari (<code>/api/users</code>) 👤</h3>
+        <p>Foydalanuvchi ma'lumotlarini olish va boshqarish uchun.</p>
+        <table>
+            <thead>
+                <tr>
+                    <th>Metod</th>
+                    <th>URL Yo'nalishi</th>
+                    <th>Tavsif</th>
+                    <th>So'rov (Request Body)</th>
+                    <th>Javob (Response Body)</th>
+                    <th>Eslatmalar</th>
+                </tr>
+            </thead>
+            <tbody>
+                <!-- <tr>
+                    <td><span class="method get">GET</span></td>
+                    <td><code>/api/users/profile</code></td>
+                    <td>Joriy foydalanuvchi profilini olish</td>
+                    <td><em>Yo'q</em></td>
+                    <td>Foydalanuvchi obyektining to'liq ma'lumotlari</td>
+                    <td>Autentifikatsiyalangan foydalanuvchi.</td>
+                </tr> -->
+                <tr>
+                    <td><span class="method put">PUT</span></td>
+                    <td><code>/api/users/profile</code></td>
+                    <td>Joriy foydalanuvchi profilini yangilash</td>
+                    <td><code>fullName</code>, <code>phoneNumber</code>, <code>profileImage</code>, <code>password</code> (optional)</td>
+                    <td>Yangilangan foydalanuvchi obyektining ma'lumotlari</td>
+                    <td></td>
+                </tr>
+                <tr>
+                    <td><span class="method get">GET</span></td>
+                    <td><code>/api/users/:id</code></td>
+                    <td>ID bo'yicha foydalanuvchini olish</td>
+                    <td><em>Yo'q</em></td>
+                    <td>Foydalanuvchi obyektining to'liq ma'lumotlari</td>
+                    <td>Faqat admin yoki o'z useri.</td>
+                </tr>
+            </tbody>
+        </table>
+
+        <h3>3. Mahsulot Yo'nalishlari (<code>/api/products</code>) 📦</h3>
+        <p>Mahsulotlar ro'yxatini olish, mahsulot yaratish, yangilash va o'chirish uchun.</p>
+        <table>
+            <thead>
+                <tr>
+                    <th>Metod</th>
+                    <th>URL Yo'nalishi</th>
+                    <th>Tavsif</th>
+                    <th>So'rov (Request Body)</th>
+                    <th>Javob (Response Body)</th>
+                    <th>Eslatmalar</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td><span class="method get">GET</span></td>
+                    <td><code>/api/products</code></td>
+                    <td>Barcha mahsulotlarni olish</td>
+                    <td>Query params: <code>keyword</code>, <code>category</code>, <code>minPrice</code>, <code>maxPrice</code>, <code>rating</code>, <code>page</code>, <code>limit</code>, <code>sort</code></td>
+                    <td>Mahsulotlar massivi, <code>totalProducts</code>, <code>pages</code></td>
+                    <td>Filtrlar va sahifalash.</td>
+                </tr>
+                <tr>
+                    <td><span class="method get">GET</span></td>
+                    <td><code>/api/products/:id</code></td>
+                    <td>ID bo'yicha mahsulotni olish</td>
+                    <td><em>Yo'q</em></td>
+                    <td>Yagona mahsulot obyekti</td>
+                    <td></td>
+                </tr>
+                <tr>
+                    <td><span class="method post">POST</span></td>
+                    <td><code>/api/products</code></td>
+                    <td>Yangi mahsulot yaratish</td>
+                    <td><code>name</code>, <code>description</code>, <code>price</code>, <code>discountPrice</code> (optional), <code>images</code>, <code>stock</code>, <code>categoryId</code></td>
+                    <td>Yaratilgan mahsulot obyekti</td>
+                    <td>Faqat <code>seller</code> yoki <code>admin</code>.</td>
+                </tr>
+                <tr>
+                    <td><span class="method put">PUT</span></td>
+                    <td><code>/api/products/:id</code></td>
+                    <td>Mahsulotni yangilash</td>
+                    <td><code>name</code>, <code>description</code>, <code>price</code>, <code>discountPrice</code>, <code>images</code>, <code>stock</code>, <code>categoryId</code></td>
+                    <td>Yangilangan mahsulot obyekti</td>
+                    <td>Faqat mahsulotning egasi yoki <code>admin</code>.</td>
+                </tr>
+                <tr>
+                    <td><span class="method delete">DELETE</span></td>
+                    <td><code>/api/products/:id</code></td>
+                    <td>Mahsulotni o'chirish</td>
+                    <td><em>Yo'q</em></td>
+                    <td><code>{ "message": "Product removed" }</code></td>
+                    <td>Faqat mahsulotning egasi yoki <code>admin</code>.</td>
+                </tr>
+            </tbody>
+        </table>
+
+        <h3>4. Kategoriya Yo'nalishlari (<code>/api/categories</code>) 📂</h3>
+        <p>Mahsulot kategoriyalarini boshqarish uchun.</p>
+        <table>
+            <thead>
+                <tr>
+                    <th>Metod</th>
+                    <th>URL Yo'nalishi</th>
+                    <th>Tavsif</th>
+                    <th>So'rov (Request Body)</th>
+                    <th>Javob (Response Body)</th>
+                    <th>Eslatmalar</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td><span class="method get">GET</span></td>
+                    <td><code>/api/categories</code></td>
+                    <td>Barcha kategoriyalarni olish</td>
+                    <td><em>Yo'q</em></td>
+                    <td>Kategoriyalar massivi, <code>subCategories</code> bilan</td>
+                    <td></td>
+                </tr>
+                <tr>
+                    <td><span class="method get">GET</span></td>
+                    <td><code>/api/categories/:id</code></td>
+                    <td>ID bo'yicha kategoriyani olish</td>
+                    <td><em>Yo'q</em></td>
+                    <td>Yagona kategoriya obyekti</td>
+                    <td></td>
+                </tr>
+                <tr>
+                    <td><span class="method post">POST</span></td>
+                    <td><code>/api/categories</code></td>
+                    <td>Yangi kategoriya yaratish</td>
+                    <td><code>name</code>, <code>description</code> (optional), <code>image</code> (optional), <code>parentCategoryId</code> (optional)</td>
+                    <td>Yaratilgan kategoriya obyekti</td>
+                    <td>Faqat <code>admin</code>.</td>
+                </tr>
+                <tr>
+                    <td><span class="method put">PUT</span></td>
+                    <td><code>/api/categories/:id</code></td>
+                    <td>Kategoriyani yangilash</td>
+                    <td><code>name</code>, <code>description</code>, <code>image</code>, <code>parentCategoryId</code></td>
+                    <td>Yangilangan kategoriya obyekti</td>
+                    <td>Faqat <code>admin</code>.</td>
+                </tr>
+                <tr>
+                    <td><span class="method delete">DELETE</span></td>
+                    <td><code>/api/categories/:id</code></td>
+                    <td>Kategoriyani o'chirish</td>
+                    <td><em>Yo'q</em></td>
+                    <td><code>{ "message": "Category removed" }</code></td>
+                    <td>Faqat <code>admin</code>.</td>
+                </tr>
+            </tbody>
+        </table>
+
+        <h3>5. Banner Yo'nalishlari (<code>/api/banners</code>) 🖼️</h3>
+        <p>Asosiy sahifadagi bannerlarni boshqarish uchun.</p>
+        <table>
+            <thead>
+                <tr>
+                    <th>Metod</th>
+                    <th>URL Yo'nalishi</th>
+                    <th>Tavsif</th>
+                    <th>So'rov (Request Body)</th>
+                    <th>Javob (Response Body)</th>
+                    <th>Eslatmalar</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td><span class="method get">GET</span></td>
+                    <td><code>/api/banners</code></td>
+                    <td>Barcha bannerlarni olish</td>
+                    <td><em>Yo'q</em></td>
+                    <td>Bannerlar massivi</td>
+                    <td></td>
+                </tr>
+                <tr>
+                    <td><span class="method post">POST</span></td>
+                    <td><code>/api/banners</code></td>
+                    <td>Yangi banner yaratish</td>
+                    <td><code>image</code>, <code>link</code> (optional)</td>
+                    <td>Yaratilgan banner obyekti</td>
+                    <td>Faqat <code>admin</code>.</td>
+                </tr>
+                <tr>
+                    <td><span class="method put">PUT</span></td>
+                    <td><code>/api/banners/:id</code></td>
+                    <td>Bannerni yangilash</td>
+                    <td><code>image</code>, <code>link</code> (optional)</td>
+                    <td>Yangilangan banner obyekti</td>
+                    <td>Faqat <code>admin</code>.</td>
+                </tr>
+                <tr>
+                    <td><span class="method delete">DELETE</span></td>
+                    <td><code>/api/banners/:id</code></td>
+                    <td>Bannerni o'chirish</td>
+                    <td><em>Yo'q</em></td>
+                    <td><code>{ "message": "Banner removed" }</code></td>
+                    <td>Faqat <code>admin</code>.</td>
+                </tr>
+            </tbody>
+        </table>
+
+        <h3>6. Qidiruv Yo'nalishlari (<code>/api/search</code>) 🔍</h3>
+        <p>Qidiruv tarixi va qidiruv natijalari uchun.</p>
+        <table>
+            <thead>
+                <tr>
+                    <th>Metod</th>
+                    <th>URL Yo'nalishi</th>
+                    <th>Tavsif</th>
+                    <th>So'rov (Request Body)</th>
+                    <th>Javob (Response Body)</th>
+                    <th>Eslatmalar</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td><span class="method get">GET</span></td>
+                    <td><code>/api/search/history</code></td>
+                    <td>Joriy foydalanuvchining qidiruv tarixini olish</td>
+                    <td><em>Yo'q</em></td>
+                    <td>Qidiruv tarixining massivi</td>
+                    <td>Autentifikatsiyalangan foydalanuvchi.</td>
+                </tr>
+                <tr>
+                    <td><span class="method delete">DELETE</span></td>
+                    <td><code>/api/search/history/:id</code></td>
+                    <td>Qidiruv tarixidan elementni o'chirish</td>
+                    <td><em>Yo'q</em></td>
+                    <td><code>{ "message": "Search history item removed" }</code></td>
+                    <td></td>
+                </tr>
+                <tr>
+                    <td><span class="method delete">DELETE</span></td>
+                    <td><code>/api/search/history/clear</code></td>
+                    <td>Barcha qidiruv tarixini tozalash</td>
+                    <td><em>Yo'q</em></td>
+                    <td><code>{ "message": "Search history cleared" }</code></td>
+                    <td></td>
+                </tr>
+            </tbody>
+        </table>
+
+        <h3>7. Sotuvchi (Seller) Yo'nalishlari (<code>/api/sellers</code>) 🛒</h3>
+        <p>Sotuvchilar bilan bog'liq ma'lumotlar uchun.</p>
+        <table>
+            <thead>
+                <tr>
+                    <th>Metod</th>
+                    <th>URL Yo'nalishi</th>
+                    <th>Tavsif</th>
+                    <th>So'rov (Request Body)</th>
+                    <th>Javob (Response Body)</th>
+                    <th>Eslatmalar</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td><span class="method get">GET</span></td>
+                    <td><code>/api/sellers</code></td>
+                    <td>Barcha sotuvchilarni olish</td>
+                    <td><em>Yo'q</em></td>
+                    <td>Sotuvchilar massivi</td>
+                    <td>Faqat <code>admin</code>.</td>
+                </tr>
+                <tr>
+                    <td><span class="method get">GET</span></td>
+                    <td><code>/api/sellers/:id/products</code></td>
+                    <td>Sotuvchining mahsulotlarini olish</td>
+                    <td><em>Yo'q</em></td>
+                    <td>Mahsulotlar massivi</td>
+                    <td></td>
+                </tr>
+                <tr>
+                    <td><span class="method put">PUT</span></td>
+                    <td><code>/api/sellers/become</code></td>
+                    <td>Foydalanuvchini sotuvchiga aylantirish</td>
+                    <td><code>sellerInfo</code> (JSON obyekt)</td>
+                    <td>Yangilangan foydalanuvchi obyekti</td>
+                    <td>Autentifikatsiyalangan foydalanuvchi.</td>
+                </tr>
+            </tbody>
+        </table>
+
+        <h3>8. Buyurtma (Order) Yo'nalishlari (<code>/api/orders</code>) 🧾</h3>
+        <p>Buyurtmalar yaratish, olish va boshqarish uchun.</p>
+        <table>
+            <thead>
+                <tr>
+                    <th>Metod</th>
+                    <th>URL Yo'nalishi</th>
+                    <th>Tavsif</th>
+                    <th>So'rov (Request Body)</th>
+                    <th>Javob (Response Body)</th>
+                    <th>Eslatmalar</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td><span class="method post">POST</span></td>
+                    <td><code>/api/orders</code></td>
+                    <td>Yangi buyurtma yaratish</td>
+                    <td><code>orderItems</code> (massiv), <code>shippingAddress</code>, <code>paymentMethod</code>, <code>totalPrice</code></td>
+                    <td>Yaratilgan buyurtma obyekti</td>
+                    <td></td>
+                </tr>
+                <tr>
+                    <td><span class="method get">GET</span></td>
+                    <td><code>/api/orders/my-orders</code></td>
+                    <td>Foydalanuvchining buyurtmalarini olish</td>
+                    <td><em>Yo'q</em></td>
+                    <td>Buyurtmalar massivi</td>
+                    <td>Autentifikatsiyalangan foydalanuvchi.</td>
+                </tr>
+                <tr>
+                    <td><span class="method get">GET</span></td>
+                    <td><code>/api/orders/:id</code></td>
+                    <td>ID bo'yicha buyurtmani olish</td>
+                    <td><em>Yo'q</em></td>
+                    <td>Yagona buyurtma obyekti</td>
+                    <td>Faqat egasi yoki <code>admin</code>.</td>
+                </tr>
+                <tr>
+                    <td><span class="method put">PUT</span></td>
+                    <td><code>/api/orders/:id/status</code></td>
+                    <td>Buyurtma holatini yangilash</td>
+                    <td><code>status</code> (e.g., 'processing', 'shipped', 'delivered')</td>
+                    <td>Yangilangan buyurtma obyekti</td>
+                    <td>Faqat <code>admin</code> yoki <code>seller</code>.</td>
+                </tr>
+            </tbody>
+        </table>
+
+        <h3>9. Savat (Cart) Yo'nalishlari (<code>/api/cart</code>) 🛒</h3>
+        <p>Foydalanuvchi savatini boshqarish uchun.</p>
+        <table>
+            <thead>
+                <tr>
+                    <th>Metod</th>
+                    <th>URL Yo'nalishi</th>
+                    <th>Tavsif</th>
+                    <th>So'rov (Request Body)</th>
+                    <th>Javob (Response Body)</th>
+                    <th>Eslatmalar</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td><span class="method get">GET</span></td>
+                    <td><code>/api/cart</code></td>
+                    <td>Joriy foydalanuvchining savatini olish</td>
+                    <td><em>Yo'q</em></td>
+                    <td>Savat obyekti (<code>items</code> massivi bilan)</td>
+                    <td>Autentifikatsiyalangan foydalanuvchi.</td>
+                </tr>
+                <tr>
+                    <td><span class="method post">POST</span></td>
+                    <td><code>/api/cart/add</code></td>
+                    <td>Savatga mahsulot qo'shish</td>
+                    <td><code>productId</code>, <code>quantity</code></td>
+                    <td>Yangilangan savat obyekti</td>
+                    <td></td>
+                </tr>
+                <tr>
+                    <td><span class="method put">PUT</span></td>
+                    <td><code>/api/cart/update/:itemId</code></td>
+                    <td>Savatdagi mahsulot miqdorini yangilash</td>
+                    <td><code>quantity</code></td>
+                    <td>Yangilangan savat obyekti</td>
+                    <td><code>itemId</code> - <code>CartItem</code> IDsi.</td>
+                </tr>
+                <tr>
+                    <td><span class="method delete">DELETE</span></td>
+                    <td><code>/api/cart/remove/:itemId</code></td>
+                    <td>Savatdan mahsulotni o'chirish</td>
+                    <td><em>Yo'q</em></td>
+                    <td><code>{ "message": "Item removed from cart" }</code></td>
+                    <td><code>itemId</code> - <code>CartItem</code> IDsi.</td>
+                </tr>
+                <tr>
+                    <td><span class="method delete">DELETE</span></td>
+                    <td><code>/api/cart/clear</code></td>
+                    <td>Savatni tozalash</td>
+                    <td><em>Yo'q</em></td>
+                    <td><code>{ "message": "Cart cleared" }</code></td>
+                    <td></td>
+                </tr>
+            </tbody>
+        </table>
+
+        <h3>10. Bildirishnoma (Notification) Yo'nalishlari (<code>/api/users/notifications</code>) 🔔</h3>
+        <p>Foydalanuvchi bildirishnomalarini boshqarish uchun.</p>
+        <table>
+            <thead>
+                <tr>
+                    <th>Metod</th>
+                    <th>URL Yo'nalishi</th>
+                    <th>Tavsif</th>
+                    <th>So'rov (Request Body)</th>
+                    <th>Javob (Response Body)</th>
+                    <th>Eslatmalar</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td><span class="method get">GET</span></td>
+                    <td><code>/api/users/notifications</code></td>
+                    <td>Joriy foydalanuvchining bildirishnomalarini olish</td>
+                    <td><em>Yo'q</em></td>
+                    <td>Bildirishnomalar massivi (<code>read</code> status bilan)</td>
+                    <td>Autentifikatsiyalangan foydalanuvchi.</td>
+                </tr>
+                <tr>
+                    <td><span class="method put">PUT</span></td>
+                    <td><code>/api/users/notifications/:id/read</code></td>
+                    <td>Bildirishnomani o'qilgan deb belgilash</td>
+                    <td><em>Yo'q</em></td>
+                    <td>Yangilangan bildirishnoma obyekti</td>
+                    <td></td>
+                </tr>
+                <tr>
+                    <td><span class="method put">PUT</span></td>
+                    <td><code>/api/users/notifications/mark-all-read</code></td>
+                    <td>Barcha bildirishnomalarni o'qilgan deb belgilash</td>
+                    <td><em>Yo'q</em></td>
+                    <td><code>{ "message": "All notifications marked as read" }</code></td>
+                    <td></td>
+                </tr>
+                <tr>
+                    <td><span class="method delete">DELETE</span></td>
+                    <td><code>/api/users/notifications/:id</code></td>
+                    <td>Bildirishnomani o'chirish</td>
+                    <td><em>Yo'q</em></td>
+                    <td><code>{ "message": "Notification removed" }</code></td>
+                    <td></td>
+                </tr>
+            </tbody>
+        </table>
+
+        <h3>11. Admin Yo'nalishlari (<code>/api/admin</code>) 👑</h3>
+        <p>Administratorga mo'ljallangan yo'nalishlar. (Faqat <code>admin</code> statusli foydalanuvchilar kirishi mumkin)</p>
+        <table>
+            <thead>
+                <tr>
+                    <th>Metod</th>
+                    <th>URL Yo'nalishi</th>
+                    <th>Tavsif</th>
+                    <th>So'rov (Request Body)</th>
+                    <th>Javob (Response Body)</th>
+                    <th>Eslatmalar</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td><span class="method get">GET</span></td>
+                    <td><code>/api/admin/users</code></td>
+                    <td>Barcha foydalanuvchilarni olish</td>
+                    <td>Query params: <code>page</code>, <code>limit</code></td>
+                    <td>Foydalanuvchilar massivi</td>
+                    <td>Faqat <code>admin</code>.</td>
+                </tr>
+                <tr>
+                    <td><span class="method get">GET</span></td>
+                    <td><code>/api/admin/users/:id</code></td>
+                    <td>ID bo'yicha foydalanuvchini olish</td>
+                    <td><em>Yo'q</em></td>
+                    <td>Yagona foydalanuvchi obyekti</td>
+                    <td>Faqat <code>admin</code>.</td>
+                </tr>
+                <tr>
+                    <td><span class="method put">PUT</span></td>
+                    <td><code>/api/admin/users/:id</code></td>
+                    <td>Foydalanuvchi ma'lumotlarini yangilash</td>
+                    <td><code>fullName</code>, <code>phoneNumber</code>, <code>status</code>, <code>isBlocked</code></td>
+                    <td>Yangilangan foydalanuvchi obyekti</td>
+                    <td>Faqat <code>admin</code>.</td>
+                </tr>
+                <tr>
+                    <td><span class="method delete">DELETE</span></td>
+                    <td><code>/api/admin/users/:id</code></td>
+                    <td>Foydalanuvchini o'chirish</td>
+                    <td><em>Yo'q</em></td>
+                    <td><code>{ "message": "User removed" }</code></td>
+                    <td>Faqat <code>admin</code>.</td>
+                </tr>
+                <tr>
+                    <td><span class="method get">GET</span></td>
+                    <td><code>/api/admin/products</code></td>
+                    <td>Barcha mahsulotlarni boshqarish uchun olish</td>
+                    <td>Query params: <code>page</code>, <code>limit</code>, <code>sellerId</code></td>
+                    <td>Mahsulotlar massivi</td>
+                    <td>Faqat <code>admin</code>.</td>
+                </tr>
+                <tr>
+                    <td><span class="method get">GET</span></td>
+                    <td><code>/api/admin/orders</code></td>
+                    <td>Barcha buyurtmalarni boshqarish uchun olish</td>
+                    <td>Query params: <code>page</code>, <code>limit</code>, <code>status</code>, <code>userId</code></td>
+                    <td>Buyurtmalar massivi</td>
+                    <td>Faqat <code>admin</code>.</td>
+                </tr>
+                <tr>
+                    <td><span class="method get">GET</span></td>
+                    <td><code>/api/admin/reviews</code></td>
+                    <td>Barcha sharhlarni boshqarish uchun olish</td>
+                    <td><em>Yo'q</em></td>
+                    <td>Sharhlar massivi</td>
+                    <td>Faqat <code>admin</code>.</td>
+                </tr>
+                <tr>
+                    <td><span class="method delete">DELETE</span></td>
+                    <td><code>/api/admin/reviews/:id</code></td>
+                    <td>Sharhni o'chirish</td>
+                    <td><em>Yo'q</em></td>
+                    <td><code>{ "message": "Review removed" }</code></td>
+                    <td>Faqat <code>admin</code>.</td>
+                </tr>
+                <tr>
+                    <td><span class="method get">GET</span></td>
+                    <td><code>/api/admin/comments</code></td>
+                    <td>Barcha izohlarni boshqarish uchun olish</td>
+                    <td><em>Yo'q</em></td>
+                    <td>Izohlar massivi</td>
+                    <td>Faqat <code>admin</code>.</td>
+                </tr>
+                <tr>
+                    <td><span class="method delete">DELETE</span></td>
+                    <td><code>/api/admin/comments/:id</code></td>
+                    <td>Izohni o'chirish</td>
+                    <td><em>Yo'q</em></td>
+                    <td><code>{ "message": "Comment removed" }</code></td>
+                    <td>Faqat <code>admin</code>.</td>
+                </tr>
+            </tbody>
+        </table>
+
+        <hr>
+
+        <h2>Xatolarni Boshqarish (Error Handling) 🚨</h2>
+        <p>Sizning API'ngizda umumiy xatolarni boshqarish mexanizmlari mavjud:</p>
+        <ul>
+            <li><strong>404 Not Found:</strong> Agar so'ralgan yo'nalish topilmasa, API JSON formatida xato xabarini qaytaradi. Brauzer orqali kirilganda esa <code>public/404.html</code> sahifasi ko'rsatiladi.
+                <pre><code>{
+    "message": "Not Found - /api/nonexistent-route",
+    "error": {
+        "code": 404,
+        "details": "The requested API resource could not be found."
+    }
+}</code></pre>
+            </li>
+            <li><strong>400 Bad Request:</strong> Noto'g'ri so'rov tanasi, majburiy maydonlar yo'qligi va boshqa validatsiya xatolarida.</li>
+            <li><strong>401 Unauthorized:</strong> Autentifikatsiya tokeni taqdim etilmaganida yoki noto'g'ri bo'lganida.</li>
+            <li><strong>403 Forbidden:</strong> Foydalanuvchi so'ralgan resursga kirish huquqiga ega bo'lmaganida (masalan, <code>admin</code> huquqi talab qilinganda).</li>
+            <li><strong>500 Internal Server Error:</strong> Serverda kutilmagan xato yuz berganda.</li>
+        </ul>
+    </div>
+</body>
+</html>

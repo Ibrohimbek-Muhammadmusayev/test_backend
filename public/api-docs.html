@@ -1,0 +1,422 @@
+<!DOCTYPE html>
+<html lang="uz">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Market App API Documentation</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            line-height: 1.6;
+            color: #333;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+
+        .header {
+            text-align: center;
+            color: white;
+            margin-bottom: 40px;
+        }
+
+        .header h1 {
+            font-size: 3rem;
+            margin-bottom: 10px;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.3);
+        }
+
+        .header p {
+            font-size: 1.2rem;
+            opacity: 0.9;
+        }
+
+        .cards-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+            gap: 30px;
+            margin-bottom: 40px;
+        }
+
+        .card {
+            background: white;
+            border-radius: 15px;
+            padding: 30px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+            border: 1px solid #e0e0e0;
+        }
+
+        .card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 20px 40px rgba(0,0,0,0.15);
+        }
+
+        .card-icon {
+            font-size: 3rem;
+            margin-bottom: 20px;
+            text-align: center;
+        }
+
+        .card h3 {
+            color: #2c3e50;
+            margin-bottom: 15px;
+            font-size: 1.5rem;
+            text-align: center;
+        }
+
+        .card p {
+            color: #666;
+            margin-bottom: 20px;
+            text-align: center;
+        }
+
+        .card-features {
+            list-style: none;
+            margin-bottom: 25px;
+        }
+
+        .card-features li {
+            padding: 8px 0;
+            border-bottom: 1px solid #f0f0f0;
+            position: relative;
+            padding-left: 25px;
+        }
+
+        .card-features li:before {
+            content: "✓";
+            position: absolute;
+            left: 0;
+            color: #27ae60;
+            font-weight: bold;
+        }
+
+        .btn {
+            display: inline-block;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 12px 25px;
+            text-decoration: none;
+            border-radius: 25px;
+            transition: all 0.3s ease;
+            text-align: center;
+            font-weight: 600;
+            width: 100%;
+        }
+
+        .btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+        }
+
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 20px;
+            margin-bottom: 40px;
+        }
+
+        .stat-card {
+            background: rgba(255,255,255,0.1);
+            backdrop-filter: blur(10px);
+            border-radius: 15px;
+            padding: 20px;
+            text-align: center;
+            color: white;
+            border: 1px solid rgba(255,255,255,0.2);
+        }
+
+        .stat-number {
+            font-size: 2rem;
+            font-weight: bold;
+            margin-bottom: 5px;
+        }
+
+        .stat-label {
+            font-size: 0.9rem;
+            opacity: 0.8;
+        }
+
+        .features-section {
+            background: white;
+            border-radius: 15px;
+            padding: 40px;
+            margin-bottom: 30px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+        }
+
+        .features-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 30px;
+            margin-top: 30px;
+        }
+
+        .feature-item {
+            text-align: center;
+            padding: 20px;
+        }
+
+        .feature-icon {
+            font-size: 2.5rem;
+            margin-bottom: 15px;
+            color: #667eea;
+        }
+
+        .footer {
+            text-align: center;
+            color: white;
+            padding: 20px;
+            opacity: 0.8;
+        }
+
+        .quick-links {
+            background: white;
+            border-radius: 15px;
+            padding: 30px;
+            margin-bottom: 30px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+        }
+
+        .quick-links h3 {
+            color: #2c3e50;
+            margin-bottom: 20px;
+            text-align: center;
+        }
+
+        .links-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 15px;
+        }
+
+        .quick-link {
+            display: block;
+            padding: 15px;
+            background: #f8f9fa;
+            border-radius: 10px;
+            text-decoration: none;
+            color: #333;
+            transition: all 0.3s ease;
+            text-align: center;
+        }
+
+        .quick-link:hover {
+            background: #667eea;
+            color: white;
+            transform: translateY(-2px);
+        }
+
+        @media (max-width: 768px) {
+            .header h1 {
+                font-size: 2rem;
+            }
+            
+            .cards-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            .container {
+                padding: 10px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>🚀 Market App API</h1>
+            <p>Professional E-commerce Backend API Documentation</p>
+            <div style="background: rgba(255,255,255,0.1); padding: 15px; border-radius: 10px; margin-top: 20px;">
+                <strong>✅ Yangilangan (2024):</strong> API tuzilishi optimallashtirildi va controller fayllar birlashtirildi
+            </div>
+        </div>
+
+        <div class="stats-grid">
+            <div class="stat-card">
+                <div class="stat-number">50+</div>
+                <div class="stat-label">API Endpoints</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-number">3</div>
+                <div class="stat-label">User Roles</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-number">15+</div>
+                <div class="stat-label">Models</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-number">100%</div>
+                <div class="stat-label">Secure</div>
+            </div>
+        </div>
+
+        <div class="cards-grid">
+            <div class="card">
+                <div class="card-icon">👑</div>
+                <h3>Admin Dashboard</h3>
+                <p>To'liq tizim boshqaruvi va keng qamrovli analytics</p>
+                <ul class="card-features">
+                    <li>Birlashtirilgan Dashboard</li>
+                    <li>Optimallashtirilgan Analytics</li>
+                    <li>Sotuvchilar samaradorligi</li>
+                    <li>Tizim statistikasi</li>
+                    <li>Foydalanuvchi boshqaruvi</li>
+                    <li>Real-time daromad kuzatuvi</li>
+                </ul>
+                <a href="/admin-docs" class="btn">Admin Docs</a>
+            </div>
+
+            <div class="card">
+                <div class="card-icon">🏪</div>
+                <h3>Seller Dashboard</h3>
+                <p>Sotuvchilar uchun to'liq mahsulot va buyurtma boshqaruvi</p>
+                <ul class="card-features">
+                    <li>Birlashtirilgan Dashboard</li>
+                    <li>Mahsulot va Buyurtma boshqaruvi</li>
+                    <li>Sales va Product Analytics</li>
+                    <li>Order Statistics</li>
+                    <li>Optimallashtirilgan Stok boshqaruvi</li>
+                    <li>Real-time hisobotlar</li>
+                </ul>
+                <a href="/seller-docs" class="btn">Seller Docs</a>
+            </div>
+
+            <div class="card">
+                <div class="card-icon">👤</div>
+                <h3>User API</h3>
+                <p>Oddiy foydalanuvchilar uchun to'liq API qo'llanmasi</p>
+                <ul class="card-features">
+                    <li>Ro'yxatdan o'tish va kirish</li>
+                    <li>Mahsulot qidiruv va ko'rish</li>
+                    <li>Savatcha boshqaruvi</li>
+                    <li>Buyurtma berish va kuzatish</li>
+                    <li>Profil boshqaruvi</li>
+                    <li>Interaktiv misol kodlar</li>
+                </ul>
+                <a href="/user-docs" class="btn">User Docs</a>
+            </div>
+        </div>
+
+        <div class="features-section">
+            <h3 style="text-align: center; color: #2c3e50; margin-bottom: 10px;">🎯 Asosiy Xususiyatlar</h3>
+            <div class="features-grid">
+                <div class="feature-item">
+                    <div class="feature-icon">🔐</div>
+                    <h4>JWT Authentication</h4>
+                    <p>Xavfsiz token-based autentifikatsiya tizimi</p>
+                </div>
+                <div class="feature-item">
+                    <div class="feature-icon">🎨</div>
+                    <h4>Dynamic Variants</h4>
+                    <p>Rang, o'lcham va boshqa xususiyatlar bilan</p>
+                </div>
+                <div class="feature-item">
+                    <div class="feature-icon">📊</div>
+                    <h4>Real-time Analytics</h4>
+                    <p>Jonli statistika va hisobotlar</p>
+                </div>
+                <div class="feature-item">
+                    <div class="feature-icon">🔍</div>
+                    <h4>Advanced Search</h4>
+                    <p>Kuchli qidiruv va filtrlash tizimi</p>
+                </div>
+            </div>
+        </div>
+
+        <div class="quick-links">
+            <h3>🔗 Tezkor Havolalar</h3>
+            <div class="links-grid">
+                <a href="/api/products" class="quick-link">📦 Mahsulotlar</a>
+                <a href="/api/categories" class="quick-link">📂 Kategoriyalar</a>
+                <a href="/api/orders" class="quick-link">🛒 Buyurtmalar</a>
+                <a href="/api/search" class="quick-link">🔍 Qidiruv</a>
+                <a href="/api/auth/login" class="quick-link">🔑 Login</a>
+                <a href="/api/variants" class="quick-link">🎨 Variantlar</a>
+            </div>
+        </div>
+
+        <div class="footer">
+            <p>&copy; 2024 Market App API. Barcha huquqlar himoyalangan.</p>
+            <p>Professional E-commerce Backend Solution - Optimized & Consolidated</p>
+            <div style="margin-top: 10px; font-size: 0.9rem; opacity: 0.7;">
+                <p>🔄 Recent Updates: Controller optimization, Route consolidation, Database fixes</p>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Add some interactive effects
+        document.addEventListener('DOMContentLoaded', function() {
+            // Animate cards on scroll
+            const cards = document.querySelectorAll('.card');
+            const observer = new IntersectionObserver((entries) => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        entry.target.style.opacity = '1';
+                        entry.target.style.transform = 'translateY(0)';
+                    }
+                });
+            });
+
+            cards.forEach(card => {
+                card.style.opacity = '0';
+                card.style.transform = 'translateY(20px)';
+                card.style.transition = 'opacity 0.6s ease, transform 0.6s ease';
+                observer.observe(card);
+            });
+
+            // Add click effects to buttons
+            document.querySelectorAll('.btn').forEach(btn => {
+                btn.addEventListener('click', function(e) {
+                    const ripple = document.createElement('span');
+                    const rect = this.getBoundingClientRect();
+                    const size = Math.max(rect.width, rect.height);
+                    const x = e.clientX - rect.left - size / 2;
+                    const y = e.clientY - rect.top - size / 2;
+                    
+                    ripple.style.width = ripple.style.height = size + 'px';
+                    ripple.style.left = x + 'px';
+                    ripple.style.top = y + 'px';
+                    ripple.classList.add('ripple');
+                    
+                    this.appendChild(ripple);
+                    
+                    setTimeout(() => {
+                        ripple.remove();
+                    }, 600);
+                });
+            });
+        });
+    </script>
+
+    <style>
+        .ripple {
+            position: absolute;
+            border-radius: 50%;
+            background: rgba(255,255,255,0.3);
+            transform: scale(0);
+            animation: ripple-animation 0.6s linear;
+            pointer-events: none;
+        }
+
+        @keyframes ripple-animation {
+            to {
+                transform: scale(4);
+                opacity: 0;
+            }
+        }
+    </style>
+</body>
+</html>

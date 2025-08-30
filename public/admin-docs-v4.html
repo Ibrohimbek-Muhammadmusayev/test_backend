@@ -1,0 +1,756 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin API Documentation - Market App v4.0</title>
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            line-height: 1.6;
+            margin: 0;
+            padding: 20px;
+            background-color: #f5f5f5;
+        }
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            background: white;
+            padding: 30px;
+            border-radius: 10px;
+            box-shadow: 0 0 20px rgba(0,0,0,0.1);
+        }
+        h1 {
+            color: #2c3e50;
+            border-bottom: 3px solid #3498db;
+            padding-bottom: 10px;
+        }
+        h2 {
+            color: #34495e;
+            margin-top: 30px;
+            border-left: 4px solid #3498db;
+            padding-left: 15px;
+        }
+        h3 {
+            color: #2980b9;
+        }
+        .endpoint {
+            background: #ecf0f1;
+            padding: 15px;
+            margin: 10px 0;
+            border-radius: 5px;
+            border-left: 4px solid #3498db;
+        }
+        .method {
+            display: inline-block;
+            padding: 3px 8px;
+            border-radius: 3px;
+            color: white;
+            font-weight: bold;
+            margin-right: 10px;
+        }
+        .get { background-color: #27ae60; }
+        .post { background-color: #e74c3c; }
+        .put { background-color: #f39c12; }
+        .delete { background-color: #e67e22; }
+        pre {
+            background: #2c3e50;
+            color: #ecf0f1;
+            padding: 15px;
+            border-radius: 5px;
+            overflow-x: auto;
+        }
+        .auth-required {
+            color: #e74c3c;
+            font-weight: bold;
+        }
+        .nav {
+            background: #34495e;
+            padding: 15px;
+            margin: -30px -30px 30px -30px;
+            border-radius: 10px 10px 0 0;
+        }
+        .nav a {
+            color: white;
+            text-decoration: none;
+            margin-right: 20px;
+            padding: 5px 10px;
+            border-radius: 3px;
+            transition: background 0.3s;
+        }
+        .nav a:hover {
+            background: #2c3e50;
+        }
+        .nav a.active {
+            background: #3498db;
+        }
+        .new-feature {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 15px;
+            border-radius: 8px;
+            margin: 15px 0;
+        }
+        .version-badge {
+            background: #e74c3c;
+            color: white;
+            padding: 2px 8px;
+            border-radius: 12px;
+            font-size: 0.8em;
+            margin-left: 10px;
+        }
+        .enhanced-badge {
+            background: #f39c12;
+            color: white;
+            padding: 2px 8px;
+            border-radius: 12px;
+            font-size: 0.8em;
+            margin-left: 10px;
+        }
+        .toc {
+            background: #f8f9fa;
+            padding: 20px;
+            border-radius: 8px;
+            margin: 20px 0;
+        }
+        .toc ul {
+            list-style-type: none;
+            padding-left: 0;
+        }
+        .toc li {
+            margin: 5px 0;
+        }
+        .toc a {
+            text-decoration: none;
+            color: #2980b9;
+        }
+        .toc a:hover {
+            text-decoration: underline;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="nav">
+            <a href="/api-docs">General API</a>
+            <a href="/admin-docs-v4" class="active">Admin API v4.0</a>
+            <a href="/seller-docs">Seller API</a>
+            <a href="/user-docs">User API</a>
+        </div>
+
+        <h1>🛡️ Admin API Documentation <span class="version-badge">v4.0</span></h1>
+        <p>Complete API documentation for administrative functions in the enhanced Market App platform.</p>
+        
+        <div class="new-feature">
+            <h3>🆕 What's New in Version 4.0</h3>
+            <ul>
+                <li><strong>🎯 Enhanced Banner Management:</strong> Time scheduling, auto-deactivation, analytics tracking</li>
+                <li><strong>💱 Advanced Currency System:</strong> Multi-currency support, formatting options, auto-updates</li>
+                <li><strong>🔔 Comprehensive Notifications:</strong> Admin messaging, bulk operations, real-time delivery</li>
+                <li><strong>📊 User Preference Analytics:</strong> Language/currency usage statistics</li>
+                <li><strong>🌐 Multi-language Platform:</strong> Translation management, localization support</li>
+                <li><strong>🔄 Scheduled Tasks:</strong> Automated banner expiration, notification cleanup</li>
+            </ul>
+        </div>
+
+        <div class="toc">
+            <h3>📋 Table of Contents</h3>
+            <ul>
+                <li><a href="#dashboard">📊 Dashboard & Analytics</a></li>
+                <li><a href="#banners">🎯 Enhanced Banner Management</a></li>
+                <li><a href="#currencies">💱 Currency Management</a></li>
+                <li><a href="#languages">🌐 Language Management</a></li>
+                <li><a href="#notifications">🔔 Notification System</a></li>
+                <li><a href="#users">👥 User Management</a></li>
+                <li><a href="#products">🛍️ Product Management</a></li>
+                <li><a href="#orders">📦 Order Management</a></li>
+                <li><a href="#analytics">📈 Analytics & Reports</a></li>
+                <li><a href="#bulk">🔄 Bulk Operations</a></li>
+                <li><a href="#files">📁 File Management</a></li>
+            </ul>
+        </div>
+        
+        <p><strong>Base URL:</strong> <code>http://localhost:5000/api</code></p>
+        <p><strong>Authentication:</strong> <span class="auth-required">Bearer Token Required (Admin Role)</span></p>
+
+        <h2 id="dashboard">📊 Dashboard & Analytics</h2>
+        
+        <div class="endpoint">
+            <h3><span class="method get">GET</span> /admin/dashboard</h3>
+            <p>Get comprehensive dashboard statistics with growth metrics</p>
+            <pre><code>Authorization: Bearer {admin_token}
+
+Response:
+{
+  "overview": {
+    "totalUsers": 1250,
+    "totalSellers": 89,
+    "totalProducts": 2340,
+    "totalOrders": 5670,
+    "totalRevenue": 234567890,
+    "pendingOrders": 45,
+    "completedOrders": 5625,
+    "growth": {
+      "users": 12.5,
+      "orders": 8.3,
+      "revenue": 15.7
+    }
+  },
+  "recentUsers": [...],
+  "recentOrders": [...],
+  "topSellers": [...]
+}</code></pre>
+        </div>
+
+        <div class="endpoint">
+            <h3><span class="method get">GET</span> /admin/analytics</h3>
+            <p>Get detailed analytics with period filtering</p>
+            <pre><code>GET /admin/analytics?period=30&type=sales
+Authorization: Bearer {admin_token}</code></pre>
+        </div>
+
+        <h2 id="banners">🎯 Enhanced Banner Management <span class="version-badge">NEW</span></h2>
+        
+        <div class="endpoint">
+            <h3><span class="method get">GET</span> /admin/banners</h3>
+            <p>Get all banners with scheduling and analytics info</p>
+            <pre><code>Authorization: Bearer {admin_token}
+
+Response includes:
+- Scheduling information (startDate, endDate, duration)
+- Analytics data (viewCount, clickCount, CTR)
+- Translation status
+- Expiration status</code></pre>
+        </div>
+
+        <div class="endpoint">
+            <h3><span class="method post">POST</span> /admin/banners</h3>
+            <p>Create banner with advanced scheduling and localization</p>
+            <pre><code>Authorization: Bearer {admin_token}
+Content-Type: multipart/form-data
+
+{
+  "title": "Flash Sale Banner",
+  "description": "Limited time offer",
+  "type": "product",
+  "position": "top",
+  "priority": 5,
+  "startDate": "2024-02-01T00:00:00Z",
+  "duration": 7,
+  "autoDeactivate": true,
+  "typeData": {
+    "groupId": 2
+  },
+  "translations": {
+    "uz": {
+      "title": "Tezkor sotish banneri",
+      "description": "Cheklangan vaqt taklifi"
+    },
+    "ru": {
+      "title": "Баннер быстрой продажи",
+      "description": "Предложение ограничено по времени"
+    }
+  }
+}</code></pre>
+        </div>
+
+        <div class="endpoint">
+            <h3><span class="method post">POST</span> /admin/banners/check-expired</h3>
+            <p>Manually check and deactivate expired banners</p>
+            <pre><code>Authorization: Bearer {admin_token}
+
+Response:
+{
+  "message": "3 expired banners deactivated",
+  "deactivatedCount": 3
+}</code></pre>
+        </div>
+
+        <div class="endpoint">
+            <h3><span class="method put">PUT</span> /admin/banners/:id/translations/:language</h3>
+            <p>Update banner translations for specific language</p>
+            <pre><code>Authorization: Bearer {admin_token}
+Content-Type: application/json
+
+{
+  "title": "Translated Title",
+  "description": "Translated Description"
+}</code></pre>
+        </div>
+
+        <h2 id="currencies">💱 Currency Management <span class="enhanced-badge">ENHANCED</span></h2>
+        
+        <div class="endpoint">
+            <h3><span class="method get">GET</span> /settings/admin/currencies</h3>
+            <p>Get all currencies with formatting and display options</p>
+            <pre><code>Authorization: Bearer {admin_token}</code></pre>
+        </div>
+
+        <div class="endpoint">
+            <h3><span class="method post">POST</span> /settings/admin/currencies</h3>
+            <p>Create currency with advanced formatting options</p>
+            <pre><code>Authorization: Bearer {admin_token}
+Content-Type: application/json
+
+{
+  "code": "GBP",
+  "name": "British Pound",
+  "nativeName": "British Pound Sterling",
+  "symbol": "£",
+  "rate": 0.000067,
+  "country": "GB",
+  "flag": "🇬🇧",
+  "position": "before",
+  "decimalPlaces": 2,
+  "thousandsSeparator": ",",
+  "decimalSeparator": ".",
+  "autoUpdate": true,
+  "displayOrder": 4,
+  "roundingMode": "round"
+}</code></pre>
+        </div>
+
+        <div class="endpoint">
+            <h3><span class="method put">PUT</span> /settings/admin/currencies/:code</h3>
+            <p>Update currency settings and exchange rates</p>
+            <pre><code>Authorization: Bearer {admin_token}
+Content-Type: application/json
+
+{
+  "rate": 0.000078,
+  "isActive": true,
+  "autoUpdate": false
+}</code></pre>
+        </div>
+
+        <h2 id="languages">🌐 Language Management <span class="enhanced-badge">ENHANCED</span></h2>
+        
+        <div class="endpoint">
+            <h3><span class="method get">GET</span> /settings/admin/languages</h3>
+            <p>Get all languages with translation status</p>
+            <pre><code>Authorization: Bearer {admin_token}</code></pre>
+        </div>
+
+        <div class="endpoint">
+            <h3><span class="method post">POST</span> /settings/admin/languages</h3>
+            <p>Create new language with initial translations</p>
+            <pre><code>Authorization: Bearer {admin_token}
+Content-Type: application/json
+
+{
+  "code": "fr",
+  "name": "Français",
+  "nativeName": "Français",
+  "flag": "🇫🇷",
+  "direction": "ltr",
+  "translations": {
+    "welcome": "Bienvenue",
+    "home": "Accueil",
+    "products": "Produits",
+    "cart": "Panier"
+  }
+}</code></pre>
+        </div>
+
+        <div class="endpoint">
+            <h3><span class="method put">PUT</span> /settings/admin/translations/:code</h3>
+            <p>Update language translations</p>
+            <pre><code>Authorization: Bearer {admin_token}
+Content-Type: application/json
+
+{
+  "translations": {
+    "welcome": "Xush kelibsiz",
+    "new_feature": "Yangi imkoniyat",
+    "enhanced_system": "Takomillashtirilgan tizim"
+  }
+}</code></pre>
+        </div>
+
+        <h2 id="notifications">🔔 Advanced Notification System <span class="version-badge">NEW</span></h2>
+        
+        <div class="endpoint">
+            <h3><span class="method get">GET</span> /users/notifications/admin</h3>
+            <p>Get all notifications with advanced filtering</p>
+            <pre><code>Authorization: Bearer {admin_token}
+GET /users/notifications/admin?type=admin_message&priority=high&page=1&limit=20</code></pre>
+        </div>
+
+        <div class="endpoint">
+            <h3><span class="method post">POST</span> /users/notifications/admin</h3>
+            <p>Send notification to specific user with actions</p>
+            <pre><code>Authorization: Bearer {admin_token}
+Content-Type: application/json
+
+{
+  "userId": 123,
+  "title": "Important Account Update",
+  "message": "Please verify your account information",
+  "type": "admin_message",
+  "priority": "high",
+  "category": "account",
+  "link": "/profile/verify",
+  "actions": [
+    {
+      "label": "Verify Now",
+      "action": "navigate",
+      "url": "/profile/verify"
+    },
+    {
+      "label": "Remind Later",
+      "action": "snooze",
+      "url": "/notifications/snooze"
+    }
+  ],
+  "expiresAt": "2024-02-15T23:59:59Z",
+  "translations": {
+    "uz": {
+      "title": "Muhim hisob yangilanishi",
+      "message": "Iltimos, hisob ma'lumotlaringizni tasdiqlang"
+    }
+  }
+}</code></pre>
+        </div>
+
+        <div class="endpoint">
+            <h3><span class="method post">POST</span> /users/notifications/admin/bulk</h3>
+            <p>Send notifications to multiple users</p>
+            <pre><code>Authorization: Bearer {admin_token}
+Content-Type: application/json
+
+{
+  "userIds": [1, 2, 3, 4, 5],
+  "title": "System Update Notice",
+  "message": "The system will be updated tonight",
+  "type": "admin_message",
+  "priority": "normal",
+  "deliveryMethod": {
+    "push": true,
+    "email": true,
+    "sms": false
+  }
+}</code></pre>
+        </div>
+
+        <div class="endpoint">
+            <h3><span class="method post">POST</span> /users/notifications/admin/broadcast</h3>
+            <p>Broadcast to all active users</p>
+            <pre><code>Authorization: Bearer {admin_token}
+Content-Type: application/json
+
+{
+  "title": "System Maintenance Notice",
+  "message": "The system will be under maintenance on Sunday from 2 AM to 4 AM",
+  "type": "admin_message",
+  "priority": "urgent",
+  "category": "system",
+  "translations": {
+    "uz": {
+      "title": "Tizim texnik xizmat ko'rsatish haqida xabar",
+      "message": "Yakshanba kuni soat 2:00 dan 4:00 gacha tizim texnik xizmat ko'rsatish rejimida bo'ladi"
+    }
+  }
+}</code></pre>
+        </div>
+
+        <div class="endpoint">
+            <h3><span class="method delete">DELETE</span> /users/notifications/admin/cleanup</h3>
+            <p>Clean up expired notifications</p>
+            <pre><code>Authorization: Bearer {admin_token}
+
+Response:
+{
+  "message": "15 expired notifications cleaned up",
+  "deletedCount": 15
+}</code></pre>
+        </div>
+
+        <h2 id="users">👥 User Management</h2>
+        
+        <div class="endpoint">
+            <h3><span class="method get">GET</span> /admin/users</h3>
+            <p>Get all users with preference information</p>
+            <pre><code>GET /admin/users?status=user&language=uz&currency=UZS&page=1&limit=20
+Authorization: Bearer {admin_token}</code></pre>
+        </div>
+
+        <div class="endpoint">
+            <h3><span class="method get">GET</span> /users/preferences/stats <span class="version-badge">NEW</span></h3>
+            <p>Get user preference statistics</p>
+            <pre><code>Authorization: Bearer {admin_token}
+
+Response:
+{
+  "stats": {
+    "languages": [
+      {
+        "preferredLanguage": "uz",
+        "userCount": 1250
+      },
+      {
+        "preferredLanguage": "ru",
+        "userCount": 340
+      }
+    ],
+    "currencies": [
+      {
+        "preferredCurrency": "UZS",
+        "userCount": 1450
+      },
+      {
+        "preferredCurrency": "USD",
+        "userCount": 280
+      }
+    ]
+  }
+}</code></pre>
+        </div>
+
+        <div class="endpoint">
+            <h3><span class="method put">PUT</span> /admin/users/:id/block</h3>
+            <p>Block or unblock a user</p>
+            <pre><code>Authorization: Bearer {admin_token}</code></pre>
+        </div>
+
+        <div class="endpoint">
+            <h3><span class="method put">PUT</span> /admin/:id/make-seller</h3>
+            <p>Convert user to seller</p>
+            <pre><code>Authorization: Bearer {admin_token}</code></pre>
+        </div>
+
+        <h2 id="products">🛍️ Product Management <span class="enhanced-badge">ENHANCED</span></h2>
+        
+        <div class="endpoint">
+            <h3><span class="method get">GET</span> /admin/products</h3>
+            <p>Get all products with multi-currency information</p>
+            <pre><code>GET /admin/products?currency=USD&language=en
+Authorization: Bearer {admin_token}</code></pre>
+        </div>
+
+        <div class="endpoint">
+            <h3><span class="method post">POST</span> /admin/products</h3>
+            <p>Create product with multi-currency variants</p>
+            <pre><code>Authorization: Bearer {admin_token}
+Content-Type: multipart/form-data
+
+{
+  "name": "Premium Smartphone",
+  "description": "High-end smartphone",
+  "categoryId": 1,
+  "variants": [
+    {
+      "size": "128GB",
+      "color": "Black",
+      "price": 599.99,
+      "currency": "USD",
+      "prices": {
+        "UZS": 7350000,
+        "EUR": 549.99,
+        "RUB": 55000
+      },
+      "discountPrices": {
+        "UZS": 6615000,
+        "EUR": 494.99,
+        "RUB": 49500
+      },
+      "attributes": {
+        "storage": "128GB",
+        "color": "Black",
+        "material": "Aluminum"
+      }
+    }
+  ],
+  "translations": {
+    "uz": {
+      "name": "Premium Smartphone",
+      "description": "Yuqori sifatli smartphone"
+    }
+  }
+}</code></pre>
+        </div>
+
+        <h2 id="orders">📦 Order Management</h2>
+        
+        <div class="endpoint">
+            <h3><span class="method get">GET</span> /admin/orders</h3>
+            <p>Get all orders with currency information</p>
+            <pre><code>Authorization: Bearer {admin_token}</code></pre>
+        </div>
+
+        <div class="endpoint">
+            <h3><span class="method put">PUT</span> /admin/orders/:id/status</h3>
+            <p>Update order status with automatic notifications</p>
+            <pre><code>Authorization: Bearer {admin_token}
+Content-Type: application/json
+
+{
+  "status": "processing",
+  "notifyUser": true,
+  "notifySeller": true
+}</code></pre>
+        </div>
+
+        <h2 id="analytics">📈 Analytics & Reports <span class="enhanced-badge">ENHANCED</span></h2>
+        
+        <div class="endpoint">
+            <h3><span class="method get">GET</span> /admin/analytics/banners</h3>
+            <p>Get banner performance analytics</p>
+            <pre><code>Authorization: Bearer {admin_token}
+
+Response includes:
+- Click-through rates by banner
+- View statistics
+- Performance by position
+- Conversion metrics</code></pre>
+        </div>
+
+        <div class="endpoint">
+            <h3><span class="method get">GET</span> /admin/analytics/currencies</h3>
+            <p>Get currency usage analytics</p>
+            <pre><code>Authorization: Bearer {admin_token}</code></pre>
+        </div>
+
+        <div class="endpoint">
+            <h3><span class="method get">GET</span> /admin/analytics/notifications</h3>
+            <p>Get notification delivery and engagement stats</p>
+            <pre><code>Authorization: Bearer {admin_token}</code></pre>
+        </div>
+
+        <h2 id="bulk">🔄 Bulk Operations</h2>
+        
+        <div class="endpoint">
+            <h3><span class="method delete">DELETE</span> /admin/users/bulk</h3>
+            <p>Delete multiple users</p>
+            <pre><code>Authorization: Bearer {admin_token}
+Content-Type: application/json
+
+{
+  "userIds": [1, 2, 3, 4, 5]
+}</code></pre>
+        </div>
+
+        <div class="endpoint">
+            <h3><span class="method put">PUT</span> /admin/products/bulk/status</h3>
+            <p>Update multiple products status</p>
+            <pre><code>Authorization: Bearer {admin_token}
+Content-Type: application/json
+
+{
+  "productIds": [1, 2, 3],
+  "isActive": false
+}</code></pre>
+        </div>
+
+        <div class="endpoint">
+            <h3><span class="method put">PUT</span> /admin/products/bulk/currency</h3>
+            <p>Update currency for multiple products</p>
+            <pre><code>Authorization: Bearer {admin_token}
+Content-Type: application/json
+
+{
+  "productIds": [1, 2, 3],
+  "fromCurrency": "UZS",
+  "toCurrency": "USD",
+  "updatePrices": true
+}</code></pre>
+        </div>
+
+        <h2 id="files">📁 File Management</h2>
+        
+        <div class="endpoint">
+            <h3><span class="method post">POST</span> /admin/upload</h3>
+            <p>Upload files with enhanced validation</p>
+            <pre><code>Authorization: Bearer {admin_token}
+Content-Type: multipart/form-data
+
+Supports: images, documents, videos
+Max size: 10MB per file
+Formats: jpg, png, webp, pdf, mp4</code></pre>
+        </div>
+
+        <div class="endpoint">
+            <h3><span class="method get">GET</span> /admin/files</h3>
+            <p>List uploaded files with metadata</p>
+            <pre><code>Authorization: Bearer {admin_token}</code></pre>
+        </div>
+
+        <div class="endpoint">
+            <h3><span class="method delete">DELETE</span> /admin/files/cleanup</h3>
+            <p>Clean up unused files</p>
+            <pre><code>Authorization: Bearer {admin_token}</code></pre>
+        </div>
+
+        <h2>⚙️ Platform Settings <span class="enhanced-badge">ENHANCED</span></h2>
+        
+        <div class="endpoint">
+            <h3><span class="method get">GET</span> /settings/admin</h3>
+            <p>Get comprehensive platform settings</p>
+            <pre><code>Authorization: Bearer {admin_token}</code></pre>
+        </div>
+
+        <div class="endpoint">
+            <h3><span class="method put">PUT</span> /settings/admin</h3>
+            <p>Update platform settings with validation</p>
+            <pre><code>Authorization: Bearer {admin_token}
+Content-Type: application/json
+
+{
+  "siteName": "My Enhanced Market App",
+  "siteDescription": "Advanced e-commerce platform",
+  "platformCommission": 7.5,
+  "defaultCurrency": "UZS",
+  "defaultLanguage": "uz",
+  "features": {
+    "multiVendor": true,
+    "multiCurrency": true,
+    "multiLanguage": true,
+    "scheduledBanners": true,
+    "advancedNotifications": true
+  }
+}</code></pre>
+        </div>
+
+        <h2>🔒 Security & Authentication</h2>
+        <ul>
+            <li>All admin endpoints require a valid JWT token with admin role</li>
+            <li>Tokens expire after 24 hours and need to be refreshed</li>
+            <li>Include the token in the Authorization header: <code>Bearer {token}</code></li>
+            <li>Admin users cannot be blocked or deleted by other admins</li>
+            <li>Rate limiting: 200 requests per minute for admin users</li>
+            <li>All sensitive operations are logged for audit purposes</li>
+        </ul>
+
+        <h2>📝 Response Codes</h2>
+        <ul>
+            <li><strong>200:</strong> Success</li>
+            <li><strong>201:</strong> Created</li>
+            <li><strong>400:</strong> Bad Request / Validation Error</li>
+            <li><strong>401:</strong> Unauthorized</li>
+            <li><strong>403:</strong> Forbidden (Not Admin)</li>
+            <li><strong>404:</strong> Not Found</li>
+            <li><strong>422:</strong> Unprocessable Entity</li>
+            <li><strong>429:</strong> Too Many Requests</li>
+            <li><strong>500:</strong> Internal Server Error</li>
+        </ul>
+
+        <h2>🚀 Real-time Features</h2>
+        <ul>
+            <li><strong>WebSocket Notifications:</strong> Real-time admin alerts</li>
+            <li><strong>Live Dashboard Updates:</strong> Real-time statistics</li>
+            <li><strong>Order Status Changes:</strong> Instant notifications</li>
+            <li><strong>System Health Monitoring:</strong> Live system status</li>
+        </ul>
+
+        <h2>🔧 Developer Tools</h2>
+        <ul>
+            <li><strong>API Testing:</strong> Built-in testing interface</li>
+            <li><strong>Debug Endpoints:</strong> System health checks</li>
+            <li><strong>Performance Monitoring:</strong> Response time tracking</li>
+            <li><strong>Error Logging:</strong> Comprehensive error tracking</li>
+        </ul>
+
+        <p><em>Last updated: January 2024 - Version 4.0</em></p>
+        <p><em>For technical support, contact the development team or check the system logs.</em></p>
+    </div>
+</body>
+</html>

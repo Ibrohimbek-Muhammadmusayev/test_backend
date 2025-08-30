@@ -1,0 +1,1173 @@
+<!DOCTYPE html>
+<html lang="uz">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin Dashboard Documentation - Market App</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            line-height: 1.6;
+            color: #333;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+        }
+
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+
+        .header {
+            text-align: center;
+            color: white;
+            margin-bottom: 40px;
+        }
+
+        .header h1 {
+            font-size: 3rem;
+            margin-bottom: 10px;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.3);
+        }
+
+        .header p {
+            font-size: 1.2rem;
+            opacity: 0.9;
+        }
+
+        .back-btn {
+            display: inline-block;
+            background: rgba(255,255,255,0.2);
+            color: white;
+            padding: 10px 20px;
+            text-decoration: none;
+            border-radius: 25px;
+            margin-bottom: 20px;
+            transition: all 0.3s ease;
+        }
+
+        .back-btn:hover {
+            background: rgba(255,255,255,0.3);
+            transform: translateY(-2px);
+        }
+
+        .section {
+            background: white;
+            border-radius: 15px;
+            padding: 30px;
+            margin-bottom: 30px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+        }
+
+        .section h2 {
+            color: #2c3e50;
+            margin-bottom: 20px;
+            font-size: 1.8rem;
+            border-bottom: 3px solid #667eea;
+            padding-bottom: 10px;
+        }
+
+        .endpoint {
+            background: #f8f9fa;
+            border-radius: 10px;
+            padding: 20px;
+            margin-bottom: 20px;
+            border-left: 4px solid #667eea;
+        }
+
+        .method {
+            display: inline-block;
+            padding: 5px 12px;
+            border-radius: 20px;
+            font-weight: bold;
+            font-size: 0.8rem;
+            margin-right: 10px;
+        }
+
+        .method.get { background: #28a745; color: white; }
+        .method.post { background: #007bff; color: white; }
+        .method.put { background: #ffc107; color: black; }
+        .method.delete { background: #dc3545; color: white; }
+        .method.patch { background: #6f42c1; color: white; }
+
+        .endpoint-url {
+            font-family: 'Courier New', monospace;
+            background: #e9ecef;
+            padding: 8px 12px;
+            border-radius: 5px;
+            margin: 10px 0;
+            font-weight: bold;
+        }
+
+        .code-block {
+            background: #2d3748;
+            color: #e2e8f0;
+            padding: 20px;
+            border-radius: 10px;
+            overflow-x: auto;
+            margin: 15px 0;
+            font-family: 'Courier New', monospace;
+            font-size: 0.9rem;
+        }
+
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 20px;
+            margin-bottom: 30px;
+        }
+
+        .stat-card {
+            background: rgba(255,255,255,0.1);
+            backdrop-filter: blur(10px);
+            border-radius: 15px;
+            padding: 20px;
+            text-align: center;
+            color: white;
+            border: 1px solid rgba(255,255,255,0.2);
+        }
+
+        .stat-number {
+            font-size: 2rem;
+            font-weight: bold;
+            margin-bottom: 5px;
+        }
+
+        .stat-label {
+            font-size: 0.9rem;
+            opacity: 0.8;
+        }
+
+        .features-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 20px;
+            margin-top: 20px;
+        }
+
+        .feature-card {
+            background: #f8f9fa;
+            border-radius: 10px;
+            padding: 20px;
+            border-left: 4px solid #667eea;
+        }
+
+        .feature-card h4 {
+            color: #2c3e50;
+            margin-bottom: 10px;
+        }
+
+        .auth-note {
+            background: #fff3cd;
+            border: 1px solid #ffeaa7;
+            border-radius: 8px;
+            padding: 15px;
+            margin: 15px 0;
+            color: #856404;
+        }
+
+        .auth-note strong {
+            color: #d63031;
+        }
+
+        .auth-note.success {
+            background: #d4edda;
+            border: 1px solid #c3e6cb;
+            color: #155724;
+        }
+
+        .toc {
+            background: #f8f9fa;
+            border-radius: 10px;
+            padding: 20px;
+            margin-bottom: 30px;
+        }
+
+        .toc h3 {
+            color: #2c3e50;
+            margin-bottom: 15px;
+        }
+
+        .toc ul {
+            list-style: none;
+        }
+
+        .toc li {
+            padding: 5px 0;
+        }
+
+        .toc a {
+            color: #667eea;
+            text-decoration: none;
+            transition: color 0.3s ease;
+        }
+
+        .toc a:hover {
+            color: #764ba2;
+        }
+
+        .example-btn {
+            background: #667eea;
+            color: white;
+            border: none;
+            padding: 8px 15px;
+            border-radius: 5px;
+            cursor: pointer;
+            margin: 5px;
+            transition: all 0.3s ease;
+        }
+
+        .example-btn:hover {
+            background: #764ba2;
+            transform: translateY(-1px);
+        }
+
+        .new-features {
+            background: linear-gradient(135deg, #28a745 0%, #20c997 100%);
+            color: white;
+            padding: 25px;
+            border-radius: 15px;
+            margin-bottom: 30px;
+        }
+
+        .new-features h3 {
+            color: white;
+            margin-bottom: 15px;
+        }
+
+        @media (max-width: 768px) {
+            .header h1 {
+                font-size: 2rem;
+            }
+            
+            .container {
+                padding: 10px;
+            }
+            
+            .section {
+                padding: 20px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <a href="/api-docs" class="back-btn">← Asosiy sahifaga qaytish</a>
+        
+        <div class="header">
+            <h1>👑 Admin Dashboard API</h1>
+            <p>To'liq tizim boshqaruvi va keng qamrovli analytics</p>
+        </div>
+
+        <div class="new-features">
+            <h3>🚀 2024 Yangilanishlar</h3>
+            <p><strong>✅ Yangilangan:</strong> Multi-language support, Multi-currency system, Platform settings, Advanced analytics, Bulk operations, Export functionality va Enhanced security xususiyatlari qo'shildi.</p>
+        </div>
+
+        <div class="stats-grid">
+            <div class="stat-card">
+                <div class="stat-number">60+</div>
+                <div class="stat-label">Admin Endpoints</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-number">100%</div>
+                <div class="stat-label">Secure Access</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-number">Real-time</div>
+                <div class="stat-label">Analytics</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-number">Multi-lang</div>
+                <div class="stat-label">Support</div>
+            </div>
+        </div>
+
+        <div class="section toc">
+            <h3>📋 Mundarija</h3>
+            <ul>
+                <li><a href="#dashboard">Dashboard & Analytics</a></li>
+                <li><a href="#platform">Platform Settings</a></li>
+                <li><a href="#multilang">Multi-language Management</a></li>
+                <li><a href="#multicurrency">Multi-currency System</a></li>
+                <li><a href="#users">Foydalanuvchilar Boshqaruvi</a></li>
+                <li><a href="#products">Mahsulotlar Boshqaruvi</a></li>
+                <li><a href="#orders">Buyurtmalar Boshqaruvi</a></li>
+                <li><a href="#categories">Kategoriyalar Boshqaruvi</a></li>
+                <li><a href="#banners">Banner Boshqaruvi</a></li>
+                <li><a href="#sellers">Sotuvchilar Kuzatuvi</a></li>
+                <li><a href="#groups">Guruh Boshqaruvi</a></li>
+                <li><a href="#search">Qidiruv Statistikalari</a></li>
+                <li><a href="#notifications">Bildirishnomalar</a></li>
+                <li><a href="#bulk">Bulk Operations</a></li>
+                <li><a href="#export">Export & Reports</a></li>
+                <li><a href="#examples">Misol Kodlar</a></li>
+            </ul>
+        </div>
+
+        <div class="auth-note">
+            <strong>⚠️ Muhim:</strong> Barcha admin API'lari faqat admin token bilan ishlaydi. 
+            <code>Authorization: Bearer {admin_token}</code> header'ini qo'shishni unutmang!
+        </div>
+
+        <!-- DASHBOARD & ANALYTICS -->
+        <div class="section" id="dashboard">
+            <h2>📊 Dashboard & Analytics</h2>
+            <p>Tizimning umumiy ko'rinishi va batafsil statistikalar</p>
+
+            <div class="endpoint">
+                <span class="method get">GET</span>
+                <strong>Admin Dashboard Ma'lumotlari</strong>
+                <div class="endpoint-url">/api/admin/dashboard</div>
+                
+                <h4>Javob:</h4>
+                <div class="code-block">
+{
+  "overview": {
+    "totalUsers": 1250,
+    "totalSellers": 89,
+    "totalProducts": 2340,
+    "totalOrders": 5670,
+    "totalRevenue": 234567.89,
+    "pendingOrders": 45,
+    "completedOrders": 5625,
+    "totalReviews": 3456,
+    "averageRating": "4.2",
+    "activeProducts": 2280,
+    "lowStockProducts": 67,
+    "growth": {
+      "users": 12.5,
+      "orders": 8.3,
+      "revenue": 15.7
+    }
+  },
+  "recentUsers": [...],
+  "recentOrders": [...],
+  "topSellers": [...],
+  "platformSettings": {
+    "siteName": "Market App",
+    "defaultLanguage": "uz",
+    "defaultCurrency": "UZS"
+  }
+}
+                </div>
+                <button class="example-btn" onclick="testEndpoint('/api/admin/dashboard')">Test API</button>
+            </div>
+
+            <div class="endpoint">
+                <span class="method get">GET</span>
+                <strong>Platform Analytics</strong>
+                <div class="endpoint-url">/api/admin/analytics?period=30</div>
+                
+                <h4>Parametrlar:</h4>
+                <ul>
+                    <li><code>period</code> - Tahlil davri (kunlarda, default: 30)</li>
+                </ul>
+                <button class="example-btn" onclick="testEndpoint('/api/admin/analytics?period=7')">7 kunlik</button>
+                <button class="example-btn" onclick="testEndpoint('/api/admin/analytics?period=30')">30 kunlik</button>
+            </div>
+        </div>
+
+        <!-- PLATFORM SETTINGS -->
+        <div class="section" id="platform">
+            <h2>⚙️ Platform Settings</h2>
+            <p>Tizim sozlamalarini boshqarish</p>
+
+            <div class="endpoint">
+                <span class="method get">GET</span>
+                <strong>Platform Sozlamalari</strong>
+                <div class="endpoint-url">/api/admin/platform-settings</div>
+                
+                <h4>Javob:</h4>
+                <div class="code-block">
+{
+  "siteName": "Market App",
+  "siteDescription": "Professional E-commerce Platform",
+  "defaultLanguage": "uz",
+  "defaultCurrency": "UZS",
+  "supportedLanguages": ["uz", "ru", "en"],
+  "supportedCurrencies": ["UZS", "USD", "RUB"],
+  "commissionRate": 5.0,
+  "taxRate": 12.0,
+  "maintenanceMode": false,
+  "allowRegistration": true,
+  "emailVerificationRequired": false,
+  "phoneVerificationRequired": true
+}
+                </div>
+                <button class="example-btn" onclick="testEndpoint('/api/admin/platform-settings')">Test API</button>
+            </div>
+
+            <div class="endpoint">
+                <span class="method put">PUT</span>
+                <strong>Platform Sozlamalarini Yangilash</strong>
+                <div class="endpoint-url">/api/admin/platform-settings</div>
+                
+                <h4>So'rov tanasi:</h4>
+                <div class="code-block">
+{
+  "siteName": "My Market App",
+  "siteDescription": "Updated description",
+  "defaultLanguage": "uz",
+  "defaultCurrency": "UZS",
+  "commissionRate": 7.5,
+  "taxRate": 15.0,
+  "maintenanceMode": false
+}
+                </div>
+                <button class="example-btn" onclick="testUpdatePlatformSettings()">Sozlamalarni yangilash</button>
+            </div>
+        </div>
+
+        <!-- MULTI-LANGUAGE MANAGEMENT -->
+        <div class="section" id="multilang">
+            <h2>🌍 Multi-language Management</h2>
+            <p>Ko'p tillilik tizimini boshqarish</p>
+
+            <div class="endpoint">
+                <span class="method get">GET</span>
+                <strong>Barcha Tillar</strong>
+                <div class="endpoint-url">/api/admin/languages</div>
+                
+                <h4>Javob:</h4>
+                <div class="code-block">
+{
+  "languages": [
+    {
+      "id": 1,
+      "code": "uz",
+      "name": "O'zbek",
+      "nativeName": "O'zbek tili",
+      "isActive": true,
+      "isDefault": true
+    },
+    {
+      "id": 2,
+      "code": "ru",
+      "name": "Russian",
+      "nativeName": "Русский язык",
+      "isActive": true,
+      "isDefault": false
+    }
+  ]
+}
+                </div>
+                <button class="example-btn" onclick="testEndpoint('/api/admin/languages')">Test API</button>
+            </div>
+
+            <div class="endpoint">
+                <span class="method post">POST</span>
+                <strong>Yangi Til Qo'shish</strong>
+                <div class="endpoint-url">/api/admin/languages</div>
+                
+                <h4>So'rov tanasi:</h4>
+                <div class="code-block">
+{
+  "code": "en",
+  "name": "English",
+  "nativeName": "English",
+  "isActive": true
+}
+                </div>
+                <button class="example-btn" onclick="testCreateLanguage()">Til qo'shish</button>
+            </div>
+
+            <div class="endpoint">
+                <span class="method put">PUT</span>
+                <strong>Mahsulot Tarjimasini Yangilash</strong>
+                <div class="endpoint-url">/api/admin/products/:id/translations</div>
+                
+                <h4>So'rov tanasi:</h4>
+                <div class="code-block">
+{
+  "translations": {
+    "uz": {
+      "name": "Premium Telefon",
+      "description": "Yuqori sifatli telefon"
+    },
+    "ru": {
+      "name": "Премиум Телефон",
+      "description": "Высококачественный телефон"
+    },
+    "en": {
+      "name": "Premium Phone",
+      "description": "High-quality phone"
+    }
+  }
+}
+                </div>
+                <button class="example-btn" onclick="testUpdateProductTranslations()">Tarjimani yangilash</button>
+            </div>
+        </div>
+
+        <!-- MULTI-CURRENCY SYSTEM -->
+        <div class="section" id="multicurrency">
+            <h2>💱 Multi-currency System</h2>
+            <p>Valyuta tizimini boshqarish</p>
+
+            <div class="endpoint">
+                <span class="method get">GET</span>
+                <strong>Barcha Valyutalar</strong>
+                <div class="endpoint-url">/api/admin/currencies</div>
+                
+                <h4>Javob:</h4>
+                <div class="code-block">
+{
+  "currencies": [
+    {
+      "id": 1,
+      "code": "UZS",
+      "name": "Uzbek Som",
+      "symbol": "so'm",
+      "exchangeRate": 1.0,
+      "isActive": true,
+      "isDefault": true
+    },
+    {
+      "id": 2,
+      "code": "USD",
+      "name": "US Dollar",
+      "symbol": "$",
+      "exchangeRate": 0.000082,
+      "isActive": true,
+      "isDefault": false
+    }
+  ]
+}
+                </div>
+                <button class="example-btn" onclick="testEndpoint('/api/admin/currencies')">Test API</button>
+            </div>
+
+            <div class="endpoint">
+                <span class="method put">PUT</span>
+                <strong>Valyuta Kursini Yangilash</strong>
+                <div class="endpoint-url">/api/admin/currencies/:id/exchange-rate</div>
+                
+                <h4>So'rov tanasi:</h4>
+                <div class="code-block">
+{
+  "exchangeRate": 0.000085
+}
+                </div>
+                <button class="example-btn" onclick="testUpdateExchangeRate()">Kursni yangilash</button>
+            </div>
+
+            <div class="endpoint">
+                <span class="method post">POST</span>
+                <strong>Barcha Kurslarni Yangilash</strong>
+                <div class="endpoint-url">/api/admin/currencies/update-rates</div>
+                
+                <h4>Javob:</h4>
+                <div class="code-block">
+{
+  "message": "Exchange rates updated successfully",
+  "updatedCurrencies": 3,
+  "lastUpdate": "2024-01-01T12:00:00.000Z"
+}
+                </div>
+                <button class="example-btn" onclick="testEndpoint('/api/admin/currencies/update-rates', 'POST')">Kurslarni yangilash</button>
+            </div>
+        </div>
+
+        <!-- USERS MANAGEMENT -->
+        <div class="section" id="users">
+            <h2>👥 Foydalanuvchilar Boshqaruvi</h2>
+            <p>Barcha foydalanuvchilarni boshqarish va nazorat qilish</p>
+
+            <div class="endpoint">
+                <span class="method get">GET</span>
+                <strong>Barcha Foydalanuvchilar</strong>
+                <div class="endpoint-url">/api/admin/users?status=user&name=john&phone=998&page=1&limit=20</div>
+                
+                <h4>Parametrlar:</h4>
+                <ul>
+                    <li><code>status</code> - admin, seller, user</li>
+                    <li><code>name</code> - Ism bo'yicha qidirish</li>
+                    <li><code>phone</code> - Telefon raqami bo'yicha qidirish</li>
+                    <li><code>page</code> - Sahifa raqami</li>
+                    <li><code>limit</code> - Sahifadagi elementlar soni</li>
+                </ul>
+                <button class="example-btn" onclick="testEndpoint('/api/admin/users')">Barcha foydalanuvchilar</button>
+                <button class="example-btn" onclick="testEndpoint('/api/admin/users?status=seller')">Faqat sotuvchilar</button>
+            </div>
+
+            <div class="endpoint">
+                <span class="method put">PUT</span>
+                <strong>Foydalanuvchini Bloklash/Blokdan Chiqarish</strong>
+                <div class="endpoint-url">/api/admin/users/:id/block</div>
+                
+                <h4>Javob:</h4>
+                <div class="code-block">
+{
+  "message": "User John Doe is now blocked.",
+  "user": {
+    "id": 123,
+    "fullName": "John Doe",
+    "isBlocked": true,
+    "blockedAt": "2024-01-01T12:00:00.000Z"
+  }
+}
+                </div>
+                <button class="example-btn" onclick="testBlockUser()">Foydalanuvchini bloklash</button>
+            </div>
+        </div>
+
+        <!-- BULK OPERATIONS -->
+        <div class="section" id="bulk">
+            <h2>📦 Bulk Operations</h2>
+            <p>Ommaviy amallar va import/export</p>
+
+            <div class="endpoint">
+                <span class="method post">POST</span>
+                <strong>Ommaviy Mahsulot Import</strong>
+                <div class="endpoint-url">/api/admin/bulk/products/import</div>
+                
+                <h4>So'rov tanasi (multipart/form-data):</h4>
+                <div class="code-block">
+{
+  "file": CSV_FILE,
+  "options": {
+    "skipFirstRow": true,
+    "updateExisting": false
+  }
+}
+                </div>
+                <button class="example-btn" onclick="alert('CSV fayl yuklash uchun multipart/form-data formatida so\'rov yuboring.')">Import mahsulotlar</button>
+            </div>
+
+            <div class="endpoint">
+                <span class="method post">POST</span>
+                <strong>Ommaviy Narx Yangilash</strong>
+                <div class="endpoint-url">/api/admin/bulk/products/update-prices</div>
+                
+                <h4>So'rov tanasi:</h4>
+                <div class="code-block">
+{
+  "productIds": [1, 2, 3, 4, 5],
+  "priceUpdate": {
+    "type": "percentage",
+    "value": 10,
+    "operation": "increase"
+  }
+}
+                </div>
+                <button class="example-btn" onclick="testBulkPriceUpdate()">Ommaviy narx yangilash</button>
+            </div>
+        </div>
+
+        <!-- EXPORT & REPORTS -->
+        <div class="section" id="export">
+            <h2>📊 Export & Reports</h2>
+            <p>Ma'lumotlarni eksport qilish va hisobotlar</p>
+
+            <div class="endpoint">
+                <span class="method get">GET</span>
+                <strong>Mahsulotlarni Eksport</strong>
+                <div class="endpoint-url">/api/admin/export/products?format=csv&filters={"category":"electronics"}</div>
+                
+                <h4>Parametrlar:</h4>
+                <ul>
+                    <li><code>format</code> - csv, xlsx, json</li>
+                    <li><code>filters</code> - JSON formatida filtrlar</li>
+                </ul>
+                <button class="example-btn" onclick="testEndpoint('/api/admin/export/products?format=csv')">CSV eksport</button>
+                <button class="example-btn" onclick="testEndpoint('/api/admin/export/products?format=xlsx')">Excel eksport</button>
+            </div>
+
+            <div class="endpoint">
+                <span class="method get">GET</span>
+                <strong>Moliyaviy Hisobot</strong>
+                <div class="endpoint-url">/api/admin/export/financial-report?period=monthly&year=2024</div>
+                
+                <h4>Parametrlar:</h4>
+                <ul>
+                    <li><code>period</code> - daily, weekly, monthly, yearly</li>
+                    <li><code>year</code> - Yil</li>
+                    <li><code>month</code> - Oy (ixtiyoriy)</li>
+                </ul>
+                <button class="example-btn" onclick="testEndpoint('/api/admin/export/financial-report?period=monthly')">Moliyaviy hisobot</button>
+            </div>
+        </div>
+
+        <!-- EXAMPLES -->
+        <div class="section" id="examples">
+            <h2>💻 Misol Kodlar</h2>
+            
+            <h3>JavaScript (Fetch API)</h3>
+            <div class="code-block">
+// Admin dashboard ma'lumotlarini olish
+const getAdminDashboard = async () => {
+  try {
+    const response = await fetch('/api/admin/dashboard', {
+      method: 'GET',
+      headers: {
+        'Authorization': `Bearer ${adminToken}`,
+        'Content-Type': 'application/json'
+      }
+    });
+    
+    const data = await response.json();
+    console.log('Dashboard data:', data);
+  } catch (error) {
+    console.error('Error:', error);
+  }
+};
+
+// Platform sozlamalarini yangilash
+const updatePlatformSettings = async (settings) => {
+  try {
+    const response = await fetch('/api/admin/platform-settings', {
+      method: 'PUT',
+      headers: {
+        'Authorization': `Bearer ${adminToken}`,
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify(settings)
+    });
+    
+    const data = await response.json();
+    console.log('Settings updated:', data);
+  } catch (error) {
+    console.error('Error:', error);
+  }
+};
+
+// Multi-language: Mahsulot tarjimasini yangilash
+const updateProductTranslations = async (productId, translations) => {
+  try {
+    const response = await fetch(`/api/admin/products/${productId}/translations`, {
+      method: 'PUT',
+      headers: {
+        'Authorization': `Bearer ${adminToken}`,
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify({ translations })
+    });
+    
+    const data = await response.json();
+    console.log('Translations updated:', data);
+  } catch (error) {
+    console.error('Error:', error);
+  }
+};
+
+// Multi-currency: Valyuta kursini yangilash
+const updateExchangeRate = async (currencyId, exchangeRate) => {
+  try {
+    const response = await fetch(`/api/admin/currencies/${currencyId}/exchange-rate`, {
+      method: 'PUT',
+      headers: {
+        'Authorization': `Bearer ${adminToken}`,
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify({ exchangeRate })
+    });
+    
+    const data = await response.json();
+    console.log('Exchange rate updated:', data);
+  } catch (error) {
+    console.error('Error:', error);
+  }
+};
+
+// Bulk operations: Ommaviy narx yangilash
+const bulkUpdatePrices = async (productIds, priceUpdate) => {
+  try {
+    const response = await fetch('/api/admin/bulk/products/update-prices', {
+      method: 'POST',
+      headers: {
+        'Authorization': `Bearer ${adminToken}`,
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify({ productIds, priceUpdate })
+    });
+    
+    const data = await response.json();
+    console.log('Bulk price update:', data);
+  } catch (error) {
+    console.error('Error:', error);
+  }
+};
+            </div>
+
+            <h3>cURL</h3>
+            <div class="code-block">
+# Dashboard ma'lumotlari
+curl -X GET "http://localhost:5000/api/admin/dashboard" \
+  -H "Authorization: Bearer YOUR_ADMIN_TOKEN"
+
+# Platform sozlamalarini yangilash
+curl -X PUT "http://localhost:5000/api/admin/platform-settings" \
+  -H "Authorization: Bearer YOUR_ADMIN_TOKEN" \
+  -H "Content-Type: application/json" \
+  -d '{
+    "siteName": "My Market App",
+    "commissionRate": 7.5,
+    "taxRate": 15.0
+  }'
+
+# Mahsulot tarjimasini yangilash
+curl -X PUT "http://localhost:5000/api/admin/products/1/translations" \
+  -H "Authorization: Bearer YOUR_ADMIN_TOKEN" \
+  -H "Content-Type: application/json" \
+  -d '{
+    "translations": {
+      "uz": {"name": "Premium Telefon", "description": "Yuqori sifatli telefon"},
+      "ru": {"name": "Премиум Тел
+ефон", "description": "Высококачественный телефон"},
+      "en": {"name": "Premium Phone", "description": "High-quality phone"}
+    }
+  }'
+
+# Valyuta kursini yangilash
+curl -X PUT "http://localhost:5000/api/admin/currencies/2/exchange-rate" \
+  -H "Authorization: Bearer YOUR_ADMIN_TOKEN" \
+  -H "Content-Type: application/json" \
+  -d '{"exchangeRate": 0.000085}'
+
+# Ommaviy narx yangilash
+curl -X POST "http://localhost:5000/api/admin/bulk/products/update-prices" \
+  -H "Authorization: Bearer YOUR_ADMIN_TOKEN" \
+  -H "Content-Type: application/json" \
+  -d '{
+    "productIds": [1, 2, 3, 4, 5],
+    "priceUpdate": {
+      "type": "percentage",
+      "value": 10,
+      "operation": "increase"
+    }
+  }'
+
+# Ma'lumotlarni eksport qilish
+curl -X GET "http://localhost:5000/api/admin/export/products?format=csv" \
+  -H "Authorization: Bearer YOUR_ADMIN_TOKEN" \
+  -o "products.csv"
+            </div>
+        </div>
+
+        <div class="section">
+            <h2>🔐 Xavfsizlik</h2>
+            <div class="auth-note success">
+                <strong>Admin Privileges:</strong> Barcha admin API'lari faqat admin rolga ega foydalanuvchilar uchun mavjud.
+            </div>
+            
+            <h3>Token olish:</h3>
+            <div class="code-block">
+POST /api/auth/login
+{
+  "phoneNumber": "admin_phone",
+  "password": "admin_password"
+}
+
+// Javob:
+{
+  "accessToken": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9...",
+  "status": "admin"
+}
+            </div>
+
+            <div class="features-grid">
+                <div class="feature-card">
+                    <h4>🛡️ Xavfsiz Autentifikatsiya</h4>
+                    <p>JWT token asosida xavfsiz kirish tizimi</p>
+                </div>
+                <div class="feature-card">
+                    <h4>🔒 Rol Asosida Ruxsat</h4>
+                    <p>Faqat admin foydalanuvchilar uchun ruxsat</p>
+                </div>
+                <div class="feature-card">
+                    <h4>📊 To'liq Nazorat</h4>
+                    <p>Barcha tizim komponentlarini boshqarish</p>
+                </div>
+                <div class="feature-card">
+                    <h4>📈 Real-time Analytics</h4>
+                    <p>Jonli statistika va hisobotlar</p>
+                </div>
+                <div class="feature-card">
+                    <h4>🌍 Multi-language</h4>
+                    <p>Ko'p tillilik tizimi boshqaruvi</p>
+                </div>
+                <div class="feature-card">
+                    <h4>💱 Multi-currency</h4>
+                    <p>Valyuta tizimi va kurs yangilanishi</p>
+                </div>
+            </div>
+        </div>
+
+        <div style="text-align: center; color: white; padding: 20px; opacity: 0.8;">
+            <p>&copy; 2024 Market App Admin Panel. Barcha huquqlar himoyalangan.</p>
+            <p>Professional E-commerce Backend with Multi-language & Multi-currency Support</p>
+        </div>
+    </div>
+
+    <script>
+        function testEndpoint(url, method = 'GET') {
+            const token = prompt('Admin token kiriting:');
+            if (!token) return;
+
+            const options = {
+                method: method,
+                headers: {
+                    'Authorization': `Bearer ${token}`,
+                    'Content-Type': 'application/json'
+                }
+            };
+
+            fetch(url, options)
+            .then(response => response.json())
+            .then(data => {
+                console.log('API Response:', data);
+                alert('API javob console da ko\'ring (F12)');
+            })
+            .catch(error => {
+                console.error('Error:', error);
+                alert('Xatolik yuz berdi. Console da ko\'ring.');
+            });
+        }
+
+        function testUpdatePlatformSettings() {
+            const token = prompt('Admin token kiriting:');
+            if (!token) return;
+            
+            const siteName = prompt('Sayt nomini kiriting:') || 'My Market App';
+            const commissionRate = prompt('Komissiya foizini kiriting:') || '7.5';
+            const taxRate = prompt('Soliq foizini kiriting:') || '15.0';
+
+            const settingsData = {
+                siteName: siteName,
+                commissionRate: parseFloat(commissionRate),
+                taxRate: parseFloat(taxRate)
+            };
+
+            fetch('/api/admin/platform-settings', {
+                method: 'PUT',
+                headers: {
+                    'Authorization': `Bearer ${token}`,
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify(settingsData)
+            })
+            .then(response => response.json())
+            .then(data => {
+                console.log('Platform Settings Response:', data);
+                alert('Javob console da ko\'ring (F12)');
+            })
+            .catch(error => {
+                console.error('Error:', error);
+                alert('Xatolik yuz berdi. Console da ko\'ring.');
+            });
+        }
+
+        function testCreateLanguage() {
+            const token = prompt('Admin token kiriting:');
+            if (!token) return;
+            
+            const code = prompt('Til kodini kiriting (masalan: en):') || 'en';
+            const name = prompt('Til nomini kiriting:') || 'English';
+            const nativeName = prompt('Mahalliy nomini kiriting:') || 'English';
+
+            const languageData = {
+                code: code,
+                name: name,
+                nativeName: nativeName,
+                isActive: true
+            };
+
+            fetch('/api/admin/languages', {
+                method: 'POST',
+                headers: {
+                    'Authorization': `Bearer ${token}`,
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify(languageData)
+            })
+            .then(response => response.json())
+            .then(data => {
+                console.log('Create Language Response:', data);
+                alert('Javob console da ko\'ring (F12)');
+            })
+            .catch(error => {
+                console.error('Error:', error);
+                alert('Xatolik yuz berdi. Console da ko\'ring.');
+            });
+        }
+
+        function testUpdateProductTranslations() {
+            const token = prompt('Admin token kiriting:');
+            if (!token) return;
+            
+            const productId = prompt('Product ID kiriting:') || '1';
+            
+            const translationsData = {
+                translations: {
+                    uz: {
+                        name: "Premium Telefon",
+                        description: "Yuqori sifatli telefon"
+                    },
+                    ru: {
+                        name: "Премиум Телефон",
+                        description: "Высококачественный телефон"
+                    },
+                    en: {
+                        name: "Premium Phone",
+                        description: "High-quality phone"
+                    }
+                }
+            };
+
+            fetch(`/api/admin/products/${productId}/translations`, {
+                method: 'PUT',
+                headers: {
+                    'Authorization': `Bearer ${token}`,
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify(translationsData)
+            })
+            .then(response => response.json())
+            .then(data => {
+                console.log('Update Translations Response:', data);
+                alert('Javob console da ko\'ring (F12)');
+            })
+            .catch(error => {
+                console.error('Error:', error);
+                alert('Xatolik yuz berdi. Console da ko\'ring.');
+            });
+        }
+
+        function testUpdateExchangeRate() {
+            const token = prompt('Admin token kiriting:');
+            if (!token) return;
+            
+            const currencyId = prompt('Currency ID kiriting:') || '2';
+            const exchangeRate = prompt('Yangi kursni kiriting:') || '0.000085';
+
+            const rateData = {
+                exchangeRate: parseFloat(exchangeRate)
+            };
+
+            fetch(`/api/admin/currencies/${currencyId}/exchange-rate`, {
+                method: 'PUT',
+                headers: {
+                    'Authorization': `Bearer ${token}`,
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify(rateData)
+            })
+            .then(response => response.json())
+            .then(data => {
+                console.log('Update Exchange Rate Response:', data);
+                alert('Javob console da ko\'ring (F12)');
+            })
+            .catch(error => {
+                console.error('Error:', error);
+                alert('Xatolik yuz berdi. Console da ko\'ring.');
+            });
+        }
+
+        function testBlockUser() {
+            const token = prompt('Admin token kiriting:');
+            if (!token) return;
+            
+            const userId = prompt('User ID kiriting:');
+            if (!userId) return;
+
+            fetch(`/api/admin/users/${userId}/block`, {
+                method: 'PUT',
+                headers: {
+                    'Authorization': `Bearer ${token}`,
+                    'Content-Type': 'application/json'
+                }
+            })
+            .then(response => response.json())
+            .then(data => {
+                console.log('Block User Response:', data);
+                alert('Javob console da ko\'ring (F12)');
+            })
+            .catch(error => {
+                console.error('Error:', error);
+                alert('Xatolik yuz berdi. Console da ko\'ring.');
+            });
+        }
+
+        function testBulkPriceUpdate() {
+            const token = prompt('Admin token kiriting:');
+            if (!token) return;
+            
+            const productIds = prompt('Product ID larini vergul bilan ajratib kiriting (1,2,3):') || '1,2,3';
+            const value = prompt('Foiz yoki miqdorni kiriting:') || '10';
+            const type = prompt('Turi (percentage yoki fixed):') || 'percentage';
+            const operation = prompt('Amal (increase yoki decrease):') || 'increase';
+
+            const bulkData = {
+                productIds: productIds.split(',').map(id => parseInt(id.trim())),
+                priceUpdate: {
+                    type: type,
+                    value: parseFloat(value),
+                    operation: operation
+                }
+            };
+
+            fetch('/api/admin/bulk/products/update-prices', {
+                method: 'POST',
+                headers: {
+                    'Authorization': `Bearer ${token}`,
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify(bulkData)
+            })
+            .then(response => response.json())
+            .then(data => {
+                console.log('Bulk Price Update Response:', data);
+                alert('Javob console da ko\'ring (F12)');
+            })
+            .catch(error => {
+                console.error('Error:', error);
+                alert('Xatolik yuz berdi. Console da ko\'ring.');
+            });
+        }
+
+        // Smooth scrolling for anchor links
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                e.preventDefault();
+                const target = document.querySelector(this.getAttribute('href'));
+                if (target) {
+                    target.scrollIntoView({
+                        behavior: 'smooth',
+                        block: 'start'
+                    });
+                }
+            });
+        });
+
+        // Add animation on scroll
+        const observerOptions = {
+            threshold: 0.1,
+            rootMargin: '0px 0px -50px 0px'
+        };
+
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.style.opacity = '1';
+                    entry.target.style.transform = 'translateY(0)';
+                }
+            });
+        }, observerOptions);
+
+        document.querySelectorAll('.section').forEach(section => {
+            section.style.opacity = '0';
+            section.style.transform = 'translateY(20px)';
+            section.style.transition = 'opacity 0.6s ease, transform 0.6s ease';
+            observer.observe(section);
+        });
+    </script>
+</body>
+</html>

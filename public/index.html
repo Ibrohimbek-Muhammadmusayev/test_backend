@@ -1,0 +1,687 @@
+<!DOCTYPE html>
+<html lang="uz">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Market App API - Real Currency Rates & Multi-language</title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&display=swap" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" rel="stylesheet">
+    <style>
+        :root {
+            --primary-color: #007bff;
+            --secondary-color: #6c757d;
+            --accent-color: #28a745;
+            --background-light: #f8f9fa;
+            --background-dark: #e9ecef;
+            --text-color: #343a40;
+            --heading-color: #212529;
+            --card-bg: #ffffff;
+            --border-color: #dee2e6;
+            --shadow: rgba(0, 0, 0, 0.08);
+        }
+
+        body {
+            font-family: 'Poppins', sans-serif;
+            margin: 0;
+            padding: 0;
+            background: var(--background-light);
+            color: var(--text-color);
+            line-height: 1.7;
+        }
+
+        .container {
+            max-width: 1000px;
+            margin: 2rem auto;
+            padding: 0 20px;
+        }
+
+        h1, h2, h3 {
+            color: var(--heading-color);
+            margin-top: 2.5rem;
+            margin-bottom: 1rem;
+            font-weight: 600;
+        }
+
+        h1 {
+            font-size: 2.8rem;
+            text-align: center;
+            padding-bottom: 15px;
+            border-bottom: 3px solid var(--primary-color);
+            display: inline-block;
+            margin: 0 auto 2rem auto;
+            color: white;
+        }
+
+        h2 {
+            font-size: 2.2rem;
+            border-bottom: 2px solid var(--border-color);
+            padding-bottom: 10px;
+            display: flex;
+            align-items: center;
+        }
+
+        h2 i {
+            margin-right: 15px;
+            color: var(--primary-color);
+            font-size: 1.2em;
+        }
+
+        h3 {
+            font-size: 1.6rem;
+            color: var(--primary-color);
+            margin-top: 2rem;
+            margin-bottom: 0.8rem;
+        }
+
+        header {
+            background: var(--primary-color);
+            color: white;
+            padding: 1.5rem 0;
+            text-align: center;
+            box-shadow: 0 4px 15px var(--shadow);
+            top: 0;
+            z-index: 1000;
+        }
+
+        header p {
+            font-size: 1.1rem;
+            opacity: 0.9;
+        }
+
+        nav {
+            margin-top: 1rem;
+            display: flex;
+            justify-content: center;
+            flex-wrap: wrap;
+            gap: 25px;
+        }
+
+        nav a {
+            color: white;
+            text-decoration: none;
+            font-weight: 600;
+            padding: 8px 15px;
+            border-radius: 5px;
+            transition: background-color 0.3s ease, transform 0.2s ease;
+            font-size: 1.05rem;
+        }
+
+        nav a:hover {
+            background-color: rgba(255, 255, 255, 0.2);
+            transform: translateY(-2px);
+            text-decoration: none;
+        }
+
+        section {
+            background: var(--card-bg);
+            padding: 30px;
+            border-radius: 10px;
+            box-shadow: 0 4px 15px var(--shadow);
+            margin-bottom: 2.5rem;
+            animation: fadeIn 0.8s ease-out;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        p {
+            margin-bottom: 1rem;
+        }
+
+        ul {
+            list-style-type: none;
+            padding: 0;
+            margin: 1rem 0;
+        }
+
+        ul li {
+            position: relative;
+            padding-left: 30px;
+            margin-bottom: 8px;
+        }
+
+        ul li::before {
+            content: "\f058";
+            font-family: 'Font Awesome 5 Free';
+            font-weight: 900;
+            position: absolute;
+            left: 0;
+            color: var(--accent-color);
+            font-size: 1.1em;
+        }
+
+        code {
+            background: var(--background-dark);
+            padding: 3px 8px;
+            border-radius: 5px;
+            font-family: 'Fira Code', 'JetBrains Mono', monospace;
+            font-size: 0.95rem;
+            color: #d63384;
+        }
+
+        pre {
+            background: #282c34;
+            color: #abb2bf;
+            padding: 1.2rem;
+            border-radius: 8px;
+            overflow-x: auto;
+            margin-top: 1.5rem;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
+            font-family: 'Fira Code', 'JetBrains Mono', monospace;
+            font-size: 0.9rem;
+            line-height: 1.5;
+        }
+
+        img {
+            max-width: 100%;
+            height: auto;
+            margin: 1.5rem auto;
+            display: block;
+            border-radius: 10px;
+            box-shadow: 0 4px 12px var(--shadow);
+        }
+
+        footer {
+            text-align: center;
+            padding: 1.5rem 2rem;
+            background: var(--primary-color);
+            color: white;
+            margin-top: 3rem;
+            border-top: 3px solid var(--accent-color);
+        }
+
+        .accordion-wrapper {
+            margin-top: 2.5rem;
+            background: var(--card-bg);
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 4px 15px var(--shadow);
+        }
+
+        .accordion-button {
+            background-color: var(--background-dark);
+            color: var(--heading-color);
+            cursor: pointer;
+            padding: 15px 20px;
+            width: 100%;
+            border: none;
+            text-align: left;
+            outline: none;
+            font-size: 1.15rem;
+            transition: background-color 0.3s ease, color 0.3s ease;
+            margin-top: 10px;
+            border-radius: 8px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            font-weight: 600;
+        }
+
+        .accordion-button:hover {
+            background-color: #d0d7de;
+        }
+
+        .accordion-button.active {
+            background-color: var(--primary-color);
+            color: white;
+            border-bottom-left-radius: 0;
+            border-bottom-right-radius: 0;
+        }
+
+        .accordion-button .icon {
+            font-size: 1.2em;
+            transition: transform 0.3s ease;
+        }
+
+        .accordion-button.active .icon {
+            transform: rotate(90deg);
+        }
+
+        .accordion-panel {
+            padding: 0 20px;
+            background-color: white;
+            max-height: 0;
+            overflow: hidden;
+            transition: max-height 0.4s ease-out;
+            border-left: 4px solid var(--primary-color);
+            border-bottom-left-radius: 8px;
+            border-bottom-right-radius: 8px;
+            padding-bottom: 0;
+        }
+
+        .accordion-panel.show {
+            padding-bottom: 20px;
+        }
+
+        .accordion-panel p {
+            margin: 15px 0;
+        }
+
+        .accordion-panel ul {
+            margin: 15px 0;
+        }
+
+        .accordion-panel ul li {
+            margin-bottom: 5px;
+        }
+
+        .new-features {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 30px;
+            border-radius: 15px;
+            margin-bottom: 2.5rem;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+        }
+
+        .new-features h2 {
+            color: white;
+            border-bottom: 2px solid rgba(255,255,255,0.3);
+            margin-bottom: 20px;
+        }
+
+        .features-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 20px;
+            margin-top: 20px;
+        }
+
+        .feature-card {
+            background: rgba(255,255,255,0.1);
+            backdrop-filter: blur(10px);
+            border-radius: 10px;
+            padding: 20px;
+            border: 1px solid rgba(255,255,255,0.2);
+        }
+
+        .feature-card h4 {
+            color: white;
+            margin-bottom: 10px;
+            font-size: 1.2rem;
+        }
+
+        .feature-card p {
+            color: rgba(255,255,255,0.9);
+            margin-bottom: 0;
+        }
+
+        @media (max-width: 768px) {
+            h1 {
+                font-size: 2.2rem;
+            }
+            h2 {
+                font-size: 1.8rem;
+                flex-direction: column;
+                align-items: flex-start;
+            }
+            h2 i {
+                margin-bottom: 10px;
+            }
+            nav {
+                flex-direction: column;
+                gap: 10px;
+            }
+            nav a {
+                padding: 10px 15px;
+                width: calc(100% - 30px);
+                text-align: center;
+            }
+            section {
+                padding: 20px;
+            }
+            .accordion-button {
+                font-size: 1rem;
+                padding: 12px 15px;
+            }
+            .accordion-panel {
+                padding: 0 15px;
+            }
+        }
+    </style>
+</head>
+<body>
+
+<header>
+    <div class="container">
+        <h1>Market App API - To'liq Ma'lumot</h1>
+        <p>Professional E-commerce Backend API - Multi-language & Multi-currency Support</p>
+        <nav>
+            <a href="#yangiliklar"><i class="fas fa-star"></i> Yangiliklar</a>
+            <a href="#nima"><i class="fas fa-question-circle"></i> API nima?</a>
+            <a href="#turlari"><i class="fas fa-list-alt"></i> API turlari</a>
+            <a href="#qanday-ishlaydi"><i class="fas fa-cogs"></i> Qanday ishlaydi?</a>
+            <a href="#qollanish"><i class="fas fa-tools"></i> Qanday foydalaniladi?</a>
+            <a href="#kod-misol"><i class="fas fa-code"></i> Kod misol</a>
+            <a href="/api-docs"><i class="fas fa-book"></i> API Docs</a>
+        </nav>
+    </div>
+</header>
+
+<main class="container">
+
+    <section id="yangiliklar" class="new-features">
+        <h2><i class="fas fa-rocket"></i> 2024 Yangilanishlar</h2>
+        <p>Market App API tizimi to'liq yangilandi va professional e-commerce platformasi sifatida takomillashtirildi.</p>
+        
+        <div class="features-grid">
+            <div class="feature-card">
+                <h4>🌍 Multi-Language Support</h4>
+                <p>Mahsulotlar va kategoriyalar uchun ko'p tillilik tizimi. JSON-based tarjimalar va foydalanuvchi til sozlamalari.</p>
+            </div>
+            <div class="feature-card">
+                <h4>💱 Multi-Currency System</h4>
+                <p>Real-time valyuta konvertatsiyasi va foydalanuvchi valyuta sozlamalari. Avtomatik kurs yangilanishi.</p>
+            </div>
+            <div class="feature-card">
+                <h4>⚙️ Platform Settings</h4>
+                <p>Dinamik sayt/app nomi, komissiya tizimi, va to'liq platform sozlamalari boshqaruvi.</p>
+            </div>
+            <div class="feature-card">
+                <h4>📊 Advanced Analytics</h4>
+                <p>Real-time dashboard, sotuvchilar samaradorligi, va batafsil hisobotlar tizimi.</p>
+            </div>
+            <div class="feature-card">
+                <h4>🔐 Enhanced Security</h4>
+                <p>JWT-based authentication, rol-based access control, va xavfsizlik middleware'lari.</p>
+            </div>
+            <div class="feature-card">
+                <h4>📱 Mobile-First Design</h4>
+                <p>Responsive API documentation va barcha qurilmalarda optimal ishlash.</p>
+            </div>
+        </div>
+    </section>
+
+    <section id="nima">
+        <h2><i class="fas fa-info-circle"></i> API nima?</h2>
+        <p><strong>API (Application Programming Interface)</strong> — bu ikki dastur yoki tizim o'rtasida o'zaro aloqa va ma'lumot almashishni ta'minlaydigan vosita. U dasturlarga bir-biri bilan xavfsiz va samarali muloqot qilish imkoniyatini beruvchi qoidalar, protokollar va vositalar to'plamidir.</p>
+        <p>Market App API professional e-commerce platformasi bo'lib, quyidagi imkoniyatlarni taqdim etadi:</p>
+        <ul>
+            <li><strong>Admin Panel:</strong> To'liq tizim boshqaruvi va analytics</li>
+            <li><strong>Seller Dashboard:</strong> Sotuvchilar uchun mahsulot va buyurtma boshqaruvi</li>
+            <li><strong>User Interface:</strong> Mijozlar uchun xarid qilish va profil boshqaruvi</li>
+            <li><strong>Multi-language:</strong> Ko'p tillilik va tarjima tizimi</li>
+            <li><strong>Multi-currency:</strong> Valyuta konvertatsiyasi va sozlamalari</li>
+        </ul>
+    </section>
+
+    <section id="turlari">
+        <h2><i class="fas fa-layer-group"></i> Market App API Xususiyatlari</h2>
+        <p>Bizning API quyidagi zamonaviy texnologiyalar va yondashuvlardan foydalanadi:</p>
+        <ul>
+            <li><b>RESTful Architecture</b> — HTTP protokoli asosida qurilgan, JSON formatida ma'lumot almashish</li>
+            <li><b>JWT Authentication</b> — Xavfsiz token-based autentifikatsiya tizimi</li>
+            <li><b>Role-based Access</b> — Admin, Seller, va User rollari uchun alohida ruxsatlar</li>
+            <li><b>Real-time Features</b> — Jonli bildirishnomalar va statistika yangilanishi</li>
+            <li><b>Multi-language Support</b> — JSON-based tarjimalar va til sozlamalari</li>
+            <li><b>Multi-currency System</b> — Real-time valyuta konvertatsiyasi</li>
+            <li><b>Advanced Search</b> — Kuchli qidiruv va filtrlash imkoniyatlari</li>
+            <li><b>File Management</b> — Rasm va fayl yuklash tizimi</li>
+        </ul>
+    </section>
+
+    <section id="qanday-ishlaydi">
+        <h2><i class="fas fa-wrench"></i> Market App API qanday ishlaydi?</h2>
+        <p>Bizning API 3 asosiy foydalanuvchi turi uchun mo'ljallangan:</p>
+        
+        <h3>👑 Admin Panel</h3>
+        <ul>
+            <li><strong>Dashboard:</strong> Umumiy statistika va real-time analytics</li>
+            <li><strong>User Management:</strong> Barcha foydalanuvchilarni boshqarish</li>
+            <li><strong>Product Control:</strong> Mahsulotlar va kategoriyalarni nazorat qilish</li>
+            <li><strong>Order Monitoring:</strong> Buyurtmalarni kuzatish va boshqarish</li>
+            <li><strong>Platform Settings:</strong> Tizim sozlamalarini boshqarish</li>
+        </ul>
+
+        <h3>🏪 Seller Dashboard</h3>
+        <ul>
+            <li><strong>Product Management:</strong> O'z mahsulotlarini boshqarish</li>
+            <li><strong>Order Processing:</strong> Buyurtmalarni qayta ishlash</li>
+            <li><strong>Sales Analytics:</strong> Sotuv statistikasi va hisobotlar</li>
+            <li><strong>Inventory Control:</strong> Stok va variant boshqaruvi</li>
+            <li><strong>Profile Management:</strong> Do'kon ma'lumotlarini yangilash</li>
+        </ul>
+
+        <h3>👤 User Interface</h3>
+        <ul>
+            <li><strong>Product Browsing:</strong> Mahsulotlarni ko'rish va qidirish</li>
+            <li><strong>Shopping Cart:</strong> Savatcha boshqaruvi</li>
+            <li><strong>Order Placement:</strong> Buyurtma berish va kuzatish</li>
+            <li><strong>Profile Management:</strong> Shaxsiy ma'lumotlar boshqaruvi</li>
+            <li><strong>Wishlist:</strong> Sevimli mahsulotlar ro'yxati</li>
+        </ul>
+    </section>
+
+    <section id="qollanish">
+        <h2><i class="fas fa-lightbulb"></i> API bilan qanday ishlash?</h2>
+        <p>Market App API bilan ishlash uchun quyidagi asosiy tushunchalarni bilish zarur:</p>
+        
+        <h3>🔐 Authentication</h3>
+        <ul>
+            <li><b>Registration/Login:</b> Ro'yxatdan o'tish va tizimga kirish</li>
+            <li><b>JWT Tokens:</b> Access va Refresh tokenlar</li>
+            <li><b>Role-based Access:</b> Admin, Seller, User rollari</li>
+            <li><b>Token Refresh:</b> Avtomatik token yangilash</li>
+        </ul>
+
+        <h3>📊 Data Management</h3>
+        <ul>
+            <li><b>CRUD Operations:</b> Create, Read, Update, Delete amallar</li>
+            <li><b>Pagination:</b> Sahifalash va limit sozlamalari</li>
+            <li><b>Filtering:</b> Ma'lumotlarni filtrlash va qidirish</li>
+            <li><b>Sorting:</b> Tartiblash va saralash</li>
+        </ul>
+
+        <h3>🌍 Multi-language & Currency</h3>
+        <ul>
+            <li><b>Language Settings:</b> Foydalanuvchi til sozlamalari</li>
+            <li><b>Translation Management:</b> Tarjimalar boshqaruvi</li>
+            <li><b>Currency Conversion:</b> Real-time valyuta konvertatsiyasi</li>
+            <li><b>Localization:</b> Mahalliylashtirish middleware</li>
+        </ul>
+    </section>
+
+    <section id="kod-misol">
+        <h2><i class="fas fa-laptop-code"></i> API bilan ishlash misollari</h2>
+        
+        <h3>🔑 Authentication</h3>
+        <pre><code>
+// Ro'yxatdan o'tish
+const register = async (userData) => {
+  const response = await fetch('/api/auth/register', {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify(userData)
+  });
+  const data = await response.json();
+  localStorage.setItem('token', data.accessToken);
+};
+
+// Tizimga kirish
+const login = async (phoneNumber, password) => {
+  const response = await fetch('/api/auth/login', {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({ phoneNumber, password })
+  });
+  const data = await response.json();
+  localStorage.setItem('token', data.accessToken);
+};
+        </code></pre>
+
+        <h3>🛍️ Mahsulotlar bilan ishlash</h3>
+        <pre><code>
+// Mahsulotlarni olish
+const getProducts = async (filters = {}) => {
+  const queryParams = new URLSearchParams(filters);
+  const response = await fetch(`/api/products?${queryParams}`);
+  return await response.json();
+};
+
+// Mahsulotni like qilish
+const likeProduct = async (productId) => {
+  const token = localStorage.getItem('token');
+  const response = await fetch(`/api/products/${productId}/like`, {
+    method: 'POST',
+    headers: { 'Authorization': `Bearer ${token}` }
+  });
+  return await response.json();
+};
+        </code></pre>
+
+        <h3>🛒 Savatcha boshqaruvi</h3>
+        <pre><code>
+// Savatchaga qo'shish
+const addToCart = async (variantId, quantity) => {
+  const token = localStorage.getItem('token');
+  const response = await fetch('/api/cart/add', {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+      'Authorization': `Bearer ${token}`
+    },
+    body: JSON.stringify({ variantId, quantity })
+  });
+  return await response.json();
+};
+
+// Buyurtma berish
+const createOrder = async (orderData) => {
+  const token = localStorage.getItem('token');
+  const response = await fetch('/api/orders', {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+      'Authorization': `Bearer ${token}`
+    },
+    body: JSON.stringify(orderData)
+  });
+  return await response.json();
+};
+        </code></pre>
+    </section>
+
+    <div class="accordion-wrapper">
+        <button class="accordion-button" id="security-accordion">
+            <span class="title">🔐 API Xavfsizligi</span>
+            <i class="fas fa-chevron-right icon"></i>
+        </button>
+        <div class="accordion-panel" id="security-panel">
+            <p>Market App API xavfsizligini ta'minlash uchun quyidagi choralar ko'rilgan:</p>
+            <ul>
+                <li><strong>HTTPS protokoli:</strong> Barcha ma'lumotlar shifrlangan holda uzatiladi</li>
+                <li><strong>JWT Authentication:</strong> Xavfsiz token-based autentifikatsiya</li>
+                <li><strong>Role-based Access:</strong> Har bir rol uchun alohida ruxsatlar</li>
+                <li><strong>Rate Limiting:</strong> So'rovlar sonini cheklash</li>
+                <li><strong>Input Validation:</strong> Barcha kiritilgan ma'lumotlarni tekshirish</li>
+                <li><strong>CORS Protection:</strong> Cross-origin so'rovlarni nazorat qilish</li>
+            </ul>
+        </div>
+
+        <button class="accordion-button" id="features-accordion">
+            <span class="title">🌍 Real Valyuta Kurslari & Yangi Xususiyatlar</span>
+            <i class="fas fa-chevron-right icon"></i>
+        </button>
+        <div class="accordion-panel" id="features-panel">
+            <p><strong>2024 yilgi yangilanishlar:</strong></p>
+            <ul>
+                <li><strong>🌍 Real Valyuta Kurslari:</strong> exchangerate-api.com va fixer.io dan real kurslar, har 30 daqiqada yangilanish</li>
+                <li><strong>💱 Avtomatik Konvertatsiya:</strong> Barcha narxlar foydalanuvchi valyutasida ko'rsatiladi</li>
+                <li><strong>Multi-language Support:</strong> Ko'p tillilik tizimi va tarjima boshqaruvi</li>
+                <li><strong>Multi-currency System:</strong> 9+ valyuta qo'llab-quvvatlash (USD, UZS, RUB, EUR, GBP, JPY, CNY, KRW, TRY)</li>
+                <li><strong>Platform Settings:</strong> Dinamik tizim sozlamalari</li>
+                <li><strong>Advanced Analytics:</strong> Kengaytirilgan statistika va hisobotlar</li>
+                <li><strong>Enhanced Search:</strong> Yaxshilangan qidiruv va filtrlash</li>
+                <li><strong>File Management:</strong> Optimallashtirilgan fayl boshqaruvi</li>
+                <li><strong>Real-time Notifications:</strong> Jonli bildirishnomalar tizimi</li>
+            </ul>
+        </div>
+
+        <button class="accordion-button" id="docs-accordion">
+            <span class="title">📚 Hujjatlar</span>
+            <i class="fas fa-chevron-right icon"></i>
+        </button>
+        <div class="accordion-panel" id="docs-panel">
+            <p><strong>To'liq API hujjatlari:</strong></p>
+            <ul>
+                <li><strong><a href="/admin-docs">Admin Documentation</a>:</strong> Administrator uchun to'liq qo'llanma</li>
+                <li><strong><a href="/seller-docs">Seller Documentation</a>:</strong> Sotuvchilar uchun batafsil ma'lumot</li>
+                <li><strong><a href="/user-docs">User Documentation</a>:</strong> Foydalanuvchilar uchun API qo'llanmasi</li>
+                <li><strong><a href="/api-docs">API Overview</a>:</strong> Umumiy API ko'rinishi</li>
+            </ul>
+        </div>
+    </div>
+
+</main>
+
+<footer>
+    <p>&copy; 2024 Market App API. Barcha huquqlar himoyalangan.</p>
+    <p>Professional E-commerce Backend Solution with Multi-language & Multi-currency Support</p>
+</footer>
+
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        const accordionButtons = document.querySelectorAll('.accordion-button');
+
+        accordionButtons.forEach(button => {
+            button.addEventListener('click', function() {
+                const panel = this.nextElementSibling;
+                const icon = this.querySelector('.icon');
+
+                this.classList.toggle('active');
+                icon.classList.toggle('fa-chevron-right');
+                icon.classList.toggle('fa-chevron-down');
+
+                if (panel.style.maxHeight) {
+                    panel.style.maxHeight = null;
+                    panel.classList.remove('show');
+                } else {
+                    panel.style.maxHeight = panel.scrollHeight + 'px';
+                    panel.classList.add('show');
+                }
+            });
+        });
+
+        // Header animatsiyasi
+        const header = document.querySelector('header');
+        header.style.opacity = 0;
+        header.style.transform = 'translateY(-50px)';
+        setTimeout(() => {
+            header.style.transition = 'opacity 0.8s ease-out, transform 0.8s ease-out';
+            header.style.opacity = 1;
+            header.style.transform = 'translateY(0)';
+        }, 100);
+
+        // Scroll animatsiyasi
+        const sections = document.querySelectorAll('main section, .accordion-wrapper');
+        const observerOptions = {
+            root: null,
+            rootMargin: '0px',
+            threshold: 0.1
+        };
+
+        const observer = new IntersectionObserver((entries, observer) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.style.opacity = 1;
+                    entry.target.style.transform = 'translateY(0)';
+                    entry.target.style.transition = 'opacity 0.8s ease-out, transform 0.8s ease-out';
+                } else {
+                    entry.target.style.opacity = 0;
+                    entry.target.style.transform = 'translateY(20px)';
+                }
+            });
+        }, observerOptions);
+
+        sections.forEach(section => {
+            section.style.opacity = 0;
+            section.style.transform = 'translateY(20px)';
+            observer.observe(section);
+        });
+    });
+</script>
+
+</body>
+</html>

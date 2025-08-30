@@ -1,0 +1,145 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>404 Sahifa Topilmadi</title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&display=swap" rel="stylesheet">
+    <style>
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(-20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        @keyframes pulse {
+            0% { transform: scale(1); }
+            50% { transform: scale(1.05); }
+            100% { transform: scale(1); }
+        }
+
+        body {
+            font-family: 'Poppins', sans-serif; /* Zamonaviy shrift */
+            background: linear-gradient(135deg, #f0f4f8 0%, #d9e2ec 100%); /* Yumshoq gradient fon */
+            color: #333;
+            text-align: center;
+            display: flex; /* Kontentni markazga joylash */
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh; /* Sahifaning to'liq balandligini oladi */
+            margin: 0;
+            overflow: hidden; /* Keraksiz scrollni olib tashlash */
+        }
+
+        .container {
+            background-color: #ffffff;
+            border-radius: 16px; /* Yumshoqroq burchaklar */
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.15); /* Chuqurroq soya */
+            padding: 40px 60px;
+            max-width: 700px;
+            width: 90%;
+            animation: fadeIn 0.8s ease-out; /* Kirish animatsiyasi */
+            position: relative;
+            overflow: hidden;
+            z-index: 1;
+        }
+
+        .container::before { /* Dekorativ element */
+            content: '';
+            position: absolute;
+            top: -50px;
+            left: -50px;
+            width: 150px;
+            height: 150px;
+            background: rgba(0, 123, 255, 0.1);
+            border-radius: 50%;
+            filter: blur(40px);
+            z-index: 0;
+        }
+
+        .container::after { /* Dekorativ element */
+            content: '';
+            position: absolute;
+            bottom: -50px;
+            right: -50px;
+            width: 200px;
+            height: 200px;
+            background: rgba(255, 99, 71, 0.1);
+            border-radius: 50%;
+            filter: blur(50px);
+            z-index: 0;
+        }
+
+        h1 {
+            font-size: 8em; /* Kattaroq 404 raqami */
+            margin-bottom: 5px;
+            color: #e74c3c; /* Qizil rang */
+            text-shadow: 2px 2px 8px rgba(0, 0, 0, 0.1); /* Raqamga soya */
+            font-weight: 700;
+            letter-spacing: -3px;
+            animation: pulse 1.5s infinite ease-in-out; /* Pulsatsiya animatsiyasi */
+            position: relative;
+            z-index: 1;
+        }
+
+        p {
+            font-size: 1.3em;
+            margin-bottom: 25px;
+            color: #555;
+            font-weight: 400;
+            line-height: 1.6;
+            position: relative;
+            z-index: 1;
+        }
+
+        p:last-of-type {
+            margin-bottom: 0;
+        }
+
+        .home-link {
+            display: inline-block;
+            background-color: #007bff; /* Moviy tugma */
+            color: white;
+            padding: 12px 28px;
+            border-radius: 50px; /* Yumaloq tugma */
+            text-decoration: none;
+            font-size: 1.1em;
+            font-weight: 600;
+            transition: all 0.3s ease; /* Silliq o'tish effekti */
+            box-shadow: 0 4px 10px rgba(0, 123, 255, 0.3);
+            position: relative;
+            z-index: 1;
+        }
+
+        .home-link:hover {
+            background-color: #0056b3; /* Hover holatida to'qroq rang */
+            transform: translateY(-3px); /* Ozgina yuqoriga siljish */
+            box-shadow: 0 6px 15px rgba(0, 123, 255, 0.4);
+        }
+
+        /* Responsivlik uchun */
+        @media (max-width: 600px) {
+            .container {
+                padding: 30px 20px;
+            }
+            h1 {
+                font-size: 6em;
+            }
+            p {
+                font-size: 1em;
+            }
+            .home-link {
+                padding: 10px 20px;
+                font-size: 1em;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>404</h1>
+        <p>Uzr, siz qidirgan sahifa topilmadi. Katta ehtimol bilan sahifa ko'chirilgan yoki o'chirilgan.</p>
+        <p>Bosh sahifaga qaytish uchun</p>
+        <a href="/" class="home-link">Bosh Sahifaga Qaytish</a>
+    </div>
+</body>
+</html>

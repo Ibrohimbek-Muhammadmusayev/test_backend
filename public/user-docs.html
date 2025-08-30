@@ -1,0 +1,1203 @@
+<!DOCTYPE html>
+<html lang="uz">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>User API Documentation - Market App</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            line-height: 1.6;
+            color: #333;
+            background: linear-gradient(135deg, #74b9ff 0%, #0984e3 100%);
+            min-height: 100vh;
+        }
+
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+
+        .header {
+            text-align: center;
+            color: white;
+            margin-bottom: 40px;
+        }
+
+        .header h1 {
+            font-size: 3rem;
+            margin-bottom: 10px;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.3);
+        }
+
+        .header p {
+            font-size: 1.2rem;
+            opacity: 0.9;
+        }
+
+        .back-btn {
+            display: inline-block;
+            background: rgba(255,255,255,0.2);
+            color: white;
+            padding: 10px 20px;
+            text-decoration: none;
+            border-radius: 25px;
+            margin-bottom: 20px;
+            transition: all 0.3s ease;
+        }
+
+        .back-btn:hover {
+            background: rgba(255,255,255,0.3);
+            transform: translateY(-2px);
+        }
+
+        .section {
+            background: white;
+            border-radius: 15px;
+            padding: 30px;
+            margin-bottom: 30px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+        }
+
+        .section h2 {
+            color: #2c3e50;
+            margin-bottom: 20px;
+            font-size: 1.8rem;
+            border-bottom: 3px solid #74b9ff;
+            padding-bottom: 10px;
+        }
+
+        .endpoint {
+            background: #f8f9fa;
+            border-radius: 10px;
+            padding: 20px;
+            margin-bottom: 20px;
+            border-left: 4px solid #74b9ff;
+        }
+
+        .method {
+            display: inline-block;
+            padding: 5px 12px;
+            border-radius: 20px;
+            font-weight: bold;
+            font-size: 0.8rem;
+            margin-right: 10px;
+        }
+
+        .method.get { background: #28a745; color: white; }
+        .method.post { background: #007bff; color: white; }
+        .method.put { background: #ffc107; color: black; }
+        .method.delete { background: #dc3545; color: white; }
+        .method.patch { background: #6f42c1; color: white; }
+
+        .endpoint-url {
+            font-family: 'Courier New', monospace;
+            background: #e9ecef;
+            padding: 8px 12px;
+            border-radius: 5px;
+            margin: 10px 0;
+            font-weight: bold;
+        }
+
+        .code-block {
+            background: #2d3748;
+            color: #e2e8f0;
+            padding: 20px;
+            border-radius: 10px;
+            overflow-x: auto;
+            margin: 15px 0;
+            font-family: 'Courier New', monospace;
+            font-size: 0.9rem;
+        }
+
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 20px;
+            margin-bottom: 30px;
+        }
+
+        .stat-card {
+            background: rgba(255,255,255,0.1);
+            backdrop-filter: blur(10px);
+            border-radius: 15px;
+            padding: 20px;
+            text-align: center;
+            color: white;
+            border: 1px solid rgba(255,255,255,0.2);
+        }
+
+        .stat-number {
+            font-size: 2rem;
+            font-weight: bold;
+            margin-bottom: 5px;
+        }
+
+        .stat-label {
+            font-size: 0.9rem;
+            opacity: 0.8;
+        }
+
+        .toc {
+            background: #f8f9fa;
+            border-radius: 10px;
+            padding: 20px;
+            margin-bottom: 30px;
+        }
+
+        .toc h3 {
+            color: #2c3e50;
+            margin-bottom: 15px;
+        }
+
+        .toc ul {
+            list-style: none;
+        }
+
+        .toc li {
+            padding: 5px 0;
+        }
+
+        .toc a {
+            color: #74b9ff;
+            text-decoration: none;
+            transition: color 0.3s ease;
+        }
+
+        .toc a:hover {
+            color: #0984e3;
+        }
+
+        .auth-note {
+            background: #d4edda;
+            border: 1px solid #c3e6cb;
+            border-radius: 8px;
+            padding: 15px;
+            margin: 15px 0;
+            color: #155724;
+        }
+
+        .auth-note.warning {
+            background: #fff3cd;
+            border: 1px solid #ffeaa7;
+            color: #856404;
+        }
+
+        .example-btn {
+            background: #74b9ff;
+            color: white;
+            border: none;
+            padding: 8px 15px;
+            border-radius: 5px;
+            cursor: pointer;
+            margin: 5px;
+            transition: all 0.3s ease;
+        }
+
+        .example-btn:hover {
+            background: #0984e3;
+            transform: translateY(-1px);
+        }
+
+        .parameter-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 15px 0;
+        }
+
+        .parameter-table th,
+        .parameter-table td {
+            border: 1px solid #ddd;
+            padding: 12px;
+            text-align: left;
+        }
+
+        .parameter-table th {
+            background: #f8f9fa;
+            font-weight: bold;
+        }
+
+        .parameter-table .required {
+            color: #dc3545;
+            font-weight: bold;
+        }
+
+        .parameter-table .optional {
+            color: #6c757d;
+        }
+
+        .response-example {
+            background: #f8f9fa;
+            border-radius: 8px;
+            padding: 15px;
+            margin: 10px 0;
+        }
+
+        .response-example h5 {
+            color: #2c3e50;
+            margin-bottom: 10px;
+        }
+
+        .features-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 20px;
+            margin-top: 20px;
+        }
+
+        .feature-card {
+            background: #f8f9fa;
+            border-radius: 10px;
+            padding: 20px;
+            border-left: 4px solid #74b9ff;
+        }
+
+        .feature-card h4 {
+            color: #2c3e50;
+            margin-bottom: 10px;
+        }
+
+        .new-features {
+            background: linear-gradient(135deg, #28a745 0%, #20c997 100%);
+            color: white;
+            padding: 25px;
+            border-radius: 15px;
+            margin-bottom: 30px;
+        }
+
+        .new-features h3 {
+            color: white;
+            margin-bottom: 15px;
+        }
+
+        @media (max-width: 768px) {
+            .header h1 {
+                font-size: 2rem;
+            }
+            
+            .container {
+                padding: 10px;
+            }
+            
+            .section {
+                padding: 20px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <a href="/api-docs" class="back-btn">← Asosiy sahifaga qaytish</a>
+        
+        <div class="header">
+            <h1>👤 User API Documentation</h1>
+            <p>Oddiy foydalanuvchilar uchun to'liq API qo'llanmasi</p>
+        </div>
+
+        <div class="new-features">
+            <h3>🚀 2024 Yangilanishlar</h3>
+            <p><strong>✅ Yangilangan:</strong> Multi-language content support, User preferences (language & currency), Enhanced product browsing, Advanced search, va Improved user experience qo'shildi.</p>
+        </div>
+
+        <div class="stats-grid">
+            <div class="stat-card">
+                <div class="stat-number">40+</div>
+                <div class="stat-label">User Endpoints</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-number">Easy</div>
+                <div class="stat-label">Integration</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-number">Multi-lang</div>
+                <div class="stat-label">Support</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-number">Fast</div>
+                <div class="stat-label">Response</div>
+            </div>
+        </div>
+
+        <div class="section toc">
+            <h3>📋 Mundarija</h3>
+            <ul>
+                <li><a href="#auth">Autentifikatsiya</a></li>
+                <li><a href="#preferences">User Preferences</a></li>
+                <li><a href="#products">Mahsulotlar</a></li>
+                <li><a href="#categories">Kategoriyalar</a></li>
+                <li><a href="#banners">Bannerlar</a></li>
+                <li><a href="#groups">Guruhlar</a></li>
+                <li><a href="#cart">Savatcha</a></li>
+                <li><a href="#orders">Buyurtmalar</a></li>
+                <li><a href="#profile">Profil Boshqaruvi</a></li>
+                <li><a href="#search">Qidiruv</a></li>
+                <li><a href="#notifications">Bildirishnomalar</a></li>
+                <li><a href="#examples">Misol Kodlar</a></li>
+            </ul>
+        </div>
+
+        <div class="auth-note">
+            <strong>ℹ️ Muhim:</strong> Ba'zi API'lar foydalanuvchi token'ini talab qiladi. 
+            <code>Authorization: Bearer {user_token}</code> header'ini qo'shishni unutmang!
+        </div>
+
+        <!-- AUTHENTICATION -->
+        <div class="section" id="auth">
+            <h2>🔐 Autentifikatsiya</h2>
+            <p>Tizimga kirish va ro'yxatdan o'tish</p>
+
+            <div class="endpoint">
+                <span class="method post">POST</span>
+                <strong>Ro'yxatdan o'tish</strong>
+                <div class="endpoint-url">/api/auth/register</div>
+                
+                <h4>So'rov tanasi:</h4>
+                <table class="parameter-table">
+                    <thead>
+                        <tr>
+                            <th>Parametr</th>
+                            <th>Turi</th>
+                            <th>Majburiy</th>
+                            <th>Tavsif</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>fullName</td>
+                            <td>string</td>
+                            <td class="required">Ha</td>
+                            <td>Foydalanuvchi to'liq ismi</td>
+                        </tr>
+                        <tr>
+                            <td>phoneNumber</td>
+                            <td>string</td>
+                            <td class="required">Ha</td>
+                            <td>Telefon raqami (+998901234567)</td>
+                        </tr>
+                        <tr>
+                            <td>password</td>
+                            <td>string</td>
+                            <td class="required">Ha</td>
+                            <td>Parol (minimum 6 ta belgi)</td>
+                        </tr>
+                        <tr>
+                            <td>preferredLanguage</td>
+                            <td>string</td>
+                            <td class="optional">Yo'q</td>
+                            <td>Afzal ko'rilgan til (uz, ru, en)</td>
+                        </tr>
+                        <tr>
+                            <td>preferredCurrency</td>
+                            <td>string</td>
+                            <td class="optional">Yo'q</td>
+                            <td>Afzal ko'rilgan valyuta (UZS, USD, RUB)</td>
+                        </tr>
+                    </tbody>
+                </table>
+
+                <div class="code-block">
+{
+  "fullName": "Akmal Karimov",
+  "phoneNumber": "+998901234567",
+  "password": "mypassword123",
+  "preferredLanguage": "uz",
+  "preferredCurrency": "UZS"
+}
+                </div>
+
+                <div class="response-example">
+                    <h5>Muvaffaqiyatli javob:</h5>
+                    <div class="code-block">
+{
+  "id": 123,
+  "fullName": "Akmal Karimov",
+  "phoneNumber": "+998901234567",
+  "status": "user",
+  "profileImage": "/uploads/profile/default_profile_image.png",
+  "preferredLanguage": "uz",
+  "preferredCurrency": "UZS",
+  "accessToken": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9...",
+  "refreshToken": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9..."
+}
+                    </div>
+                </div>
+                <button class="example-btn" onclick="testRegister()">Ro'yxatdan o'tish</button>
+            </div>
+
+            <div class="endpoint">
+                <span class="method post">POST</span>
+                <strong>Tizimga kirish</strong>
+                <div class="endpoint-url">/api/auth/login</div>
+                
+                <h4>So'rov tanasi:</h4>
+                <div class="code-block">
+{
+  "phoneNumber": "+998901234567",
+  "password": "mypassword123"
+}
+                </div>
+
+                <div class="response-example">
+                    <h5>Muvaffaqiyatli javob:</h5>
+                    <div class="code-block">
+{
+  "id": 123,
+  "fullName": "Akmal Karimov",
+  "phoneNumber": "+998901234567",
+  "status": "user",
+  "profileImage": "/uploads/profile/default_profile_image.png",
+  "preferredLanguage": "uz",
+  "preferredCurrency": "UZS",
+  "accessToken": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9...",
+  "refreshToken": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9..."
+}
+                    </div>
+                </div>
+                <button class="example-btn" onclick="testLogin()">Tizimga kirish</button>
+            </div>
+
+            <div class="endpoint">
+                <span class="method post">POST</span>
+                <strong>Token Yangilash</strong>
+                <div class="endpoint-url">/api/auth/token</div>
+                
+                <h4>So'rov tanasi:</h4>
+                <div class="code-block">
+{
+  "refreshToken": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9..."
+}
+                </div>
+                <button class="example-btn" onclick="testRefreshToken()">Token yangilash</button>
+            </div>
+
+            <div class="endpoint">
+                <span class="method post">POST</span>
+                <strong>Tizimdan chiqish</strong>
+                <div class="endpoint-url">/api/auth/logout</div>
+                <button class="example-btn" onclick="testAuthEndpoint('/api/auth/logout', 'POST')">Logout</button>
+            </div>
+        </div>
+
+        <!-- USER PREFERENCES -->
+        <div class="section" id="preferences">
+            <h2>⚙️ User Preferences</h2>
+            <p>Foydalanuvchi sozlamalari va tilni boshqarish</p>
+
+            <div class="endpoint">
+                <span class="method get">GET</span>
+                <strong>Foydalanuvchi Sozlamalari</strong>
+                <div class="endpoint-url">/api/users/preferences</div>
+                
+                <h4>Javob:</h4>
+                <div class="code-block">
+{
+  "userId": 123,
+  "preferredLanguage": "uz",
+  "preferredCurrency": "UZS",
+  "settings": {
+    "notifications": {
+      "email": true,
+      "sms": false,
+      "push": true
+    },
+    "privacy": {
+      "showProfile": true,
+      "showActivity": false
+    },
+    "display": {
+      "theme": "light",
+      "itemsPerPage": 20
+    }
+  },
+  "updatedAt": "2024-01-01T12:00:00.000Z"
+}
+                </div>
+                <button class="example-btn" onclick="testAuthEndpoint('/api/users/preferences')">Sozlamalarni olish</button>
+            </div>
+
+            <div class="endpoint">
+                <span class="method put">PUT</span>
+                <strong>Til va Valyuta Sozlamalari</strong>
+                <div class="endpoint-url">/api/users/language-currency</div>
+                
+                <h4>So'rov tanasi:</h4>
+                <div class="code-block">
+{
+  "preferredLanguage": "uz",
+  "preferredCurrency": "UZS"
+}
+                </div>
+
+                <div class="response-example">
+                    <h5>Muvaffaqiyatli javob:</h5>
+                    <div class="code-block">
+{
+  "message": "Language and currency preferences updated successfully",
+  "user": {
+    "id": 123,
+    "preferredLanguage": "uz",
+    "preferredCurrency": "UZS",
+    "updatedAt": "2024-01-01T12:00:00.000Z"
+  }
+}
+                    </div>
+                </div>
+                <button class="example-btn" onclick="testUpdateLanguageCurrency()">Til/Valyuta yangilash</button>
+            </div>
+
+            <div class="endpoint">
+                <span class="method put">PUT</span>
+                <strong>Foydalanuvchi Sozlamalarini Yangilash</strong>
+                <div class="endpoint-url">/api/users/settings</div>
+                
+                <h4>So'rov tanasi:</h4>
+                <div class="code-block">
+{
+  "settings": {
+    "notifications": {
+      "email": true,
+      "sms": false,
+      "push": true
+    },
+    "privacy": {
+      "showProfile": true,
+      "showActivity": false
+    },
+    "display": {
+      "theme": "dark",
+      "itemsPerPage": 25
+    }
+  }
+}
+                </div>
+                <button class="example-btn" onclick="testUpdateUserSettings()">Sozlamalarni yangilash</button>
+            </div>
+        </div>
+
+        <!-- SEARCH -->
+        <div class="section" id="search">
+            <h2>🔍 Qidiruv</h2>
+            <p>Mahsulot va kategoriyalarni qidirish</p>
+
+            <div class="endpoint">
+                <span class="method get">GET</span>
+                <strong>Global Qidiruv</strong>
+                <div class="endpoint-url">/api/search?q=iphone&type=all&page=1&limit=20&language=uz&currency=UZS</div>
+                
+                <h4>Query Parametrlari:</h4>
+                <table class="parameter-table">
+                    <thead>
+                        <tr>
+                            <th>Parametr</th>
+                            <th>Turi</th>
+                            <th>Default</th>
+                            <th>Tavsif</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>q</td>
+                            <td>string</td>
+                            <td class="required">Ha</td>
+                            <td>Qidiruv so'zi</td>
+                        </tr>
+                        <tr>
+                            <td>type</td>
+                            <td>string</td>
+                            <td>all</td>
+                            <td>all, products, categories, sellers</td>
+                        </tr>
+                        <tr>
+                            <td>page</td>
+                            <td>number</td>
+                            <td>1</td>
+                            <td>Sahifa raqami</td>
+                        </tr>
+                        <tr>
+                            <td>limit</td>
+                            <td>number</td>
+                            <td>20</td>
+                            <td>Natijalar soni</td>
+                        </tr>
+                        <tr>
+                            <td>language</td>
+                            <td>string</td>
+                            <td>uz</td>
+                            <td>Til kodi</td>
+                        </tr>
+                        <tr>
+                            <td>currency</td>
+                            <td>string</td>
+                            <td>UZS</td>
+                            <td>Valyuta kodi</td>
+                        </tr>
+                    </tbody>
+                </table>
+
+                <div class="response-example">
+                    <h5>Muvaffaqiyatli javob:</h5>
+                    <div class="code-block">
+{
+  "query": "iphone",
+  "totalResults": 25,
+  "results": {
+    "products": [
+      {
+        "id": 1,
+        "name": "iPhone 15 Pro",
+        "price": 999.99,
+        "discountPrice": 899.99,
+        "image": "/uploads/iphone15.jpg",
+        "rating": 4.8,
+        "category": "Electronics"
+      }
+    ],
+    "categories": [
+      {
+        "id": 1,
+        "name": "Telefonlar",
+        "productCount": 45,
+        "image": "/uploads/categories/phones.jpg"
+      }
+    ],
+    "sellers": [
+      {
+        "id": 10,
+        "name": "Apple Store",
+        "rating": 4.9,
+        "productCount": 25
+      }
+    ]
+  },
+  "suggestions": ["iPhone 15", "iPhone 14", "iPhone Pro Max"],
+  "currentLanguage": "uz",
+  "currentCurrency": "UZS"
+}
+                    </div>
+                </div>
+                <button class="example-btn" onclick="testEndpoint('/api/search?q=iphone')">Test qidiruv</button>
+            </div>
+
+            <div class="endpoint">
+                <span class="method get">GET</span>
+                <strong>Qidiruv Tavsiyalari</strong>
+                <div class="endpoint-url">/api/search/suggestions?q=iph</div>
+                
+                <div class="response-example">
+                    <h5>Muvaffaqiyatli javob:</h5>
+                    <div class="code-block">
+{
+  "suggestions": [
+    "iPhone 15 Pro",
+    "iPhone 14",
+    "iPhone Pro Max",
+    "iPhone accessories"
+  ]
+}
+                    </div>
+                </div>
+                <button class="example-btn" onclick="testEndpoint('/api/search/suggestions?q=iph')">Test tavsiyalar</button>
+            </div>
+        </div>
+
+        <!-- NOTIFICATIONS -->
+        <div class="section" id="notifications">
+            <h2>🔔 Bildirishnomalar</h2>
+            <p>Foydalanuvchi bildirishnomalari</p>
+
+            <div class="endpoint">
+                <span class="method get">GET</span>
+                <strong>Bildirishnomalar Ro'yxati</strong>
+                <div class="endpoint-url">/api/notifications?page=1&limit=20&status=all</div>
+                
+                <h4>Query Parametrlari:</h4>
+                <table class="parameter-table">
+                    <thead>
+                        <tr>
+                            <th>Parametr</th>
+                            <th>Turi</th>
+                            <th>Default</th>
+                            <th>Tavsif</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>page</td>
+                            <td>number</td>
+                            <td>1</td>
+                            <td>Sahifa raqami</td>
+                        </tr>
+                        <tr>
+                            <td>limit</td>
+                            <td>number</td>
+                            <td>20</td>
+                            <td>Sahifadagi bildirishnomalar soni</td>
+                        </tr>
+                        <tr>
+                            <td>status</td>
+                            <td>string</td>
+                            <td>all</td>
+                            <td>all, read, unread</td>
+                        </tr>
+                    </tbody>
+                </table>
+
+                <div class="response-example">
+                    <h5>Muvaffaqiyatli javob:</h5>
+                    <div class="code-block">
+{
+  "notifications": [
+    {
+      "id": 1,
+      "title": "Buyurtma tasdiqlandi",
+      "message": "Sizning ORD-2024-001234 buyurtmangiz tasdiqlandi",
+      "type": "order",
+      "isRead": false,
+      "data": {
+        "orderId": "ORD-2024-001234",
+        "action": "view_order"
+      },
+      "createdAt": "2024-01-01T12:00:00.000Z"
+    }
+  ],
+  "totalNotifications": 15,
+  "unreadCount": 5,
+  "page": 1,
+  "totalPages": 1
+}
+                    </div>
+                </div>
+                
+                <div class="auth-note warning">
+                    <strong>⚠️ Diqqat:</strong> Bu API foydalanuvchi token'ini talab qiladi!
+                </div>
+                <button class="example-btn" onclick="testAuthEndpoint('/api/notifications')">Bildirishnomalarni ko'rish</button>
+            </div>
+
+            <div class="endpoint">
+                <span class="method put">PUT</span>
+                <strong>Bildirishnomani O'qilgan Deb Belgilash</strong>
+                <div class="endpoint-url">/api/notifications/:id/read</div>
+                
+                <div class="response-example">
+                    <h5>Muvaffaqiyatli javob:</h5>
+                    <div class="code-block">
+{
+  "message": "Notification marked as read",
+  "notification": {
+    "id": 1,
+    "isRead": true,
+    "readAt": "2024-01-01T12:30:00.000Z"
+  }
+}
+                    </div>
+                </div>
+                <button class="example-btn" onclick="testAuthEndpoint('/api/notifications/1/read', 'PUT')">O'qilgan deb belgilash</button>
+            </div>
+
+            <div class="endpoint">
+                <span class="method put">PUT</span>
+                <strong>Barcha Bildirishnomalarni O'qilgan Deb Belgilash</strong>
+                <div class="endpoint-url">/api/notifications/mark-all-read</div>
+                
+                <div class="response-example">
+                    <h5>Muvaffaqiyatli javob:</h5>
+                    <div class="code-block">
+{
+  "message": "All notifications marked as read",
+  "updatedCount": 5
+}
+                    </div>
+                </div>
+                <button class="example-btn" onclick="testAuthEndpoint('/api/notifications/mark-all-read', 'PUT')">Barchasini o'qilgan deb belgilash</button>
+            </div>
+
+            <div class="endpoint">
+                <span class="method delete">DELETE</span>
+                <strong>Bildirishnomani O'chirish</strong>
+                <div class="endpoint-url">/api/notifications/:id</div>
+                <button class="example-btn" onclick="testAuthEndpoint('/api/notifications/1', 'DELETE')">Bildirishnomani o'chirish</button>
+            </div>
+        </div>
+
+        <!-- EXAMPLES -->
+        <div class="section" id="examples">
+            <h2>💻 Misol Kodlar</h2>
+            <p>JavaScript va cURL misollari</p>
+
+            <div class="features-grid">
+                <div class="feature-card">
+                    <h4>JavaScript Fetch API</h4>
+                    <div class="code-block">
+// Mahsulotlarni olish
+const getProducts = async () => {
+  try {
+    const response = await fetch('/api/products?page=1&limit=12', {
+      method: 'GET',
+      headers: {
+        'Content-Type': 'application/json',
+        'Accept-Language': 'uz',
+        'Accept-Currency': 'UZS'
+      }
+    });
+    
+    const data = await response.json();
+    console.log(data);
+  } catch (error) {
+    console.error('Xatolik:', error);
+  }
+};
+
+// Token bilan so'rov
+const getUserProfile = async (token) => {
+  try {
+    
+const response = await fetch('/api/users/profile', {
+      method: 'GET',
+      headers: {
+        'Content-Type': 'application/json',
+        'Authorization': `Bearer ${token}`
+      }
+    });
+    
+    const data = await response.json();
+    console.log(data);
+  } catch (error) {
+    console.error('Xatolik:', error);
+  }
+};
+                    </div>
+                </div>
+
+                <div class="feature-card">
+                    <h4>cURL Misollari</h4>
+                    <div class="code-block">
+# Ro'yxatdan o'tish
+curl -X POST http://localhost:3000/api/auth/register \
+  -H "Content-Type: application/json" \
+  -d '{
+    "fullName": "Akmal Karimov",
+    "phoneNumber": "+998901234567",
+    "password": "mypassword123",
+    "preferredLanguage": "uz",
+    "preferredCurrency": "UZS"
+  }'
+
+# Mahsulotlarni olish
+curl -X GET "http://localhost:3000/api/products?page=1&limit=12" \
+  -H "Accept-Language: uz" \
+  -H "Accept-Currency: UZS"
+
+# Token bilan profil olish
+curl -X GET http://localhost:3000/api/users/profile \
+  -H "Authorization: Bearer YOUR_TOKEN_HERE"
+                    </div>
+                </div>
+
+                <div class="feature-card">
+                    <h4>Axios Misollari</h4>
+                    <div class="code-block">
+import axios from 'axios';
+
+// Axios instance yaratish
+const api = axios.create({
+  baseURL: 'http://localhost:3000/api',
+  headers: {
+    'Content-Type': 'application/json',
+    'Accept-Language': 'uz',
+    'Accept-Currency': 'UZS'
+  }
+});
+
+// Token qo'shish interceptor
+api.interceptors.request.use((config) => {
+  const token = localStorage.getItem('token');
+  if (token) {
+    config.headers.Authorization = `Bearer ${token}`;
+  }
+  return config;
+});
+
+// Mahsulotlarni olish
+const getProducts = async () => {
+  try {
+    const response = await api.get('/products');
+    return response.data;
+  } catch (error) {
+    console.error('Xatolik:', error);
+  }
+};
+
+// Savatchaga qo'shish
+const addToCart = async (productId, quantity) => {
+  try {
+    const response = await api.post('/cart/add', {
+      productId,
+      quantity
+    });
+    return response.data;
+  } catch (error) {
+    console.error('Xatolik:', error);
+  }
+};
+                    </div>
+                </div>
+
+                <div class="feature-card">
+                    <h4>React Hook Misoli</h4>
+                    <div class="code-block">
+import { useState, useEffect } from 'react';
+
+const useProducts = () => {
+  const [products, setProducts] = useState([]);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
+
+  useEffect(() => {
+    const fetchProducts = async () => {
+      try {
+        setLoading(true);
+        const response = await fetch('/api/products');
+        const data = await response.json();
+        setProducts(data.products);
+      } catch (err) {
+        setError(err.message);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchProducts();
+  }, []);
+
+  return { products, loading, error };
+};
+
+// Komponentda ishlatish
+const ProductList = () => {
+  const { products, loading, error } = useProducts();
+
+  if (loading) return <div>Yuklanmoqda...</div>;
+  if (error) return <div>Xatolik: {error}</div>;
+
+  return (
+    <div>
+      {products.map(product => (
+        <div key={product.id}>{product.name}</div>
+      ))}
+    </div>
+  );
+};
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Test functions for API endpoints
+        const API_BASE = window.location.origin + '/api';
+        
+        // Test basic endpoint
+        async function testEndpoint(endpoint, method = 'GET', body = null) {
+            try {
+                const options = {
+                    method,
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'Accept-Language': 'uz',
+                        'Accept-Currency': 'UZS'
+                    }
+                };
+                
+                if (body) {
+                    options.body = JSON.stringify(body);
+                }
+                
+                const response = await fetch(API_BASE + endpoint, options);
+                const data = await response.json();
+                
+                console.log(`${method} ${endpoint}:`, data);
+                alert(`API Test: ${response.status} - ${response.statusText}\nKo'proq ma'lumot uchun console'ni tekshiring`);
+            } catch (error) {
+                console.error('API Test Error:', error);
+                alert('API Test Error: ' + error.message);
+            }
+        }
+        
+        // Test authenticated endpoint
+        async function testAuthEndpoint(endpoint, method = 'GET', body = null) {
+            const token = localStorage.getItem('userToken') || prompt('User token kiriting:');
+            if (!token) {
+                alert('Token kerak!');
+                return;
+            }
+            
+            try {
+                const options = {
+                    method,
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'Authorization': `Bearer ${token}`,
+                        'Accept-Language': 'uz',
+                        'Accept-Currency': 'UZS'
+                    }
+                };
+                
+                if (body) {
+                    options.body = JSON.stringify(body);
+                }
+                
+                const response = await fetch(API_BASE + endpoint, options);
+                const data = await response.json();
+                
+                console.log(`${method} ${endpoint}:`, data);
+                alert(`API Test: ${response.status} - ${response.statusText}\nKo'proq ma'lumot uchun console'ni tekshiring`);
+            } catch (error) {
+                console.error('API Test Error:', error);
+                alert('API Test Error: ' + error.message);
+            }
+        }
+        
+        // Specific test functions
+        async function testRegister() {
+            const userData = {
+                fullName: "Test User",
+                phoneNumber: "+998901234567",
+                password: "testpassword123",
+                preferredLanguage: "uz",
+                preferredCurrency: "UZS"
+            };
+            await testEndpoint('/auth/register', 'POST', userData);
+        }
+        
+        async function testLogin() {
+            const loginData = {
+                phoneNumber: "+998901234567",
+                password: "testpassword123"
+            };
+            await testEndpoint('/auth/login', 'POST', loginData);
+        }
+        
+        async function testRefreshToken() {
+            const refreshToken = prompt('Refresh token kiriting:');
+            if (refreshToken) {
+                await testEndpoint('/auth/token', 'POST', { refreshToken });
+            }
+        }
+        
+        async function testUpdateLanguageCurrency() {
+            const data = {
+                preferredLanguage: "uz",
+                preferredCurrency: "UZS"
+            };
+            await testAuthEndpoint('/users/language-currency', 'PUT', data);
+        }
+        
+        async function testUpdateUserSettings() {
+            const data = {
+                settings: {
+                    notifications: {
+                        email: true,
+                        sms: false,
+                        push: true
+                    },
+                    privacy: {
+                        showProfile: true,
+                        showActivity: false
+                    },
+                    display: {
+                        theme: "dark",
+                        itemsPerPage: 25
+                    }
+                }
+            };
+            await testAuthEndpoint('/users/settings', 'PUT', data);
+        }
+        
+        async function testAddToCart() {
+            const data = {
+                productId: 1,
+                variantId: 1,
+                quantity: 2
+            };
+            await testAuthEndpoint('/cart/add', 'POST', data);
+        }
+        
+        async function testUpdateCartItem() {
+            const data = { quantity: 3 };
+            await testAuthEndpoint('/cart/update/1', 'PUT', data);
+        }
+        
+        async function testCreateOrder() {
+            const data = {
+                deliveryAddress: {
+                    fullName: "Test User",
+                    phoneNumber: "+998901234567",
+                    region: "Toshkent",
+                    district: "Chilonzor",
+                    street: "Test ko'chasi",
+                    house: "1",
+                    apartment: "1",
+                    landmark: "Test landmark"
+                },
+                paymentMethod: "cash",
+                notes: "Test buyurtma"
+            };
+            await testAuthEndpoint('/orders', 'POST', data);
+        }
+        
+        async function testCancelOrder() {
+            const data = { reason: "Test sabab" };
+            await testAuthEndpoint('/orders/ORD-2024-001234/cancel', 'PUT', data);
+        }
+        
+        async function testUpdateProfile() {
+            const data = {
+                fullName: "Updated Name",
+                email: "updated@example.com",
+                preferredLanguage: "uz",
+                preferredCurrency: "UZS"
+            };
+            await testAuthEndpoint('/users/profile', 'PUT', data);
+        }
+        
+        async function testUploadProfileImage() {
+            alert('Fayl yuklash uchun multipart/form-data kerak. Postman yoki boshqa tool ishlatishni tavsiya qilamiz.');
+        }
+        
+        async function testChangePassword() {
+            const data = {
+                currentPassword: "oldpassword123",
+                newPassword: "newpassword456"
+            };
+            await testAuthEndpoint('/users/change-password', 'PUT', data);
+        }
+        
+        // Save token helper
+        function saveToken() {
+            const token = prompt('User token kiriting:');
+            if (token) {
+                localStorage.setItem('userToken', token);
+                alert('Token saqlandi!');
+            }
+        }
+        
+        // Clear token helper
+        function clearToken() {
+            localStorage.removeItem('userToken');
+            alert('Token o\'chirildi!');
+        }
+        
+        console.log('User API Documentation loaded!');
+        console.log('Test functions available: testEndpoint(), testAuthEndpoint(), saveToken(), clearToken()');
+    </script>
+</body>
+</html>

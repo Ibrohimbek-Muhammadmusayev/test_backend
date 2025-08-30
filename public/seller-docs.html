@@ -1,0 +1,1514 @@
+<!DOCTYPE html>
+<html lang="uz">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Seller Dashboard Documentation - Market App</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            line-height: 1.6;
+            color: #333;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+        }
+
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+
+        .header {
+            text-align: center;
+            color: white;
+            margin-bottom: 40px;
+        }
+
+        .header h1 {
+            font-size: 3rem;
+            margin-bottom: 10px;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.3);
+        }
+
+        .header p {
+            font-size: 1.2rem;
+            opacity: 0.9;
+        }
+
+        .back-btn {
+            display: inline-block;
+            background: rgba(255,255,255,0.2);
+            color: white;
+            padding: 10px 20px;
+            text-decoration: none;
+            border-radius: 25px;
+            margin-bottom: 20px;
+            transition: all 0.3s ease;
+        }
+
+        .back-btn:hover {
+            background: rgba(255,255,255,0.3);
+            transform: translateY(-2px);
+        }
+
+        .section {
+            background: white;
+            border-radius: 15px;
+            padding: 30px;
+            margin-bottom: 30px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+        }
+
+        .section h2 {
+            color: #2c3e50;
+            margin-bottom: 20px;
+            font-size: 1.8rem;
+            border-bottom: 3px solid #667eea;
+            padding-bottom: 10px;
+        }
+
+        .endpoint {
+            background: #f8f9fa;
+            border-radius: 10px;
+            padding: 20px;
+            margin-bottom: 20px;
+            border-left: 4px solid #667eea;
+        }
+
+        .method {
+            display: inline-block;
+            padding: 5px 12px;
+            border-radius: 20px;
+            font-weight: bold;
+            font-size: 0.8rem;
+            margin-right: 10px;
+        }
+
+        .method.get { background: #28a745; color: white; }
+        .method.post { background: #007bff; color: white; }
+        .method.put { background: #ffc107; color: black; }
+        .method.delete { background: #dc3545; color: white; }
+        .method.patch { background: #6f42c1; color: white; }
+
+        .endpoint-url {
+            font-family: 'Courier New', monospace;
+            background: #e9ecef;
+            padding: 8px 12px;
+            border-radius: 5px;
+            margin: 10px 0;
+            font-weight: bold;
+        }
+
+        .code-block {
+            background: #2d3748;
+            color: #e2e8f0;
+            padding: 20px;
+            border-radius: 10px;
+            overflow-x: auto;
+            margin: 15px 0;
+            font-family: 'Courier New', monospace;
+            font-size: 0.9rem;
+        }
+
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 20px;
+            margin-bottom: 30px;
+        }
+
+        .stat-card {
+            background: rgba(255,255,255,0.1);
+            backdrop-filter: blur(10px);
+            border-radius: 15px;
+            padding: 20px;
+            text-align: center;
+            color: white;
+            border: 1px solid rgba(255,255,255,0.2);
+        }
+
+        .stat-number {
+            font-size: 2rem;
+            font-weight: bold;
+            margin-bottom: 5px;
+        }
+
+        .stat-label {
+            font-size: 0.9rem;
+            opacity: 0.8;
+        }
+
+        .features-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 20px;
+            margin-top: 20px;
+        }
+
+        .feature-card {
+            background: #f8f9fa;
+            border-radius: 10px;
+            padding: 20px;
+            border-left: 4px solid #667eea;
+        }
+
+        .feature-card h4 {
+            color: #2c3e50;
+            margin-bottom: 10px;
+        }
+
+        .auth-note {
+            background: #fff3cd;
+            border: 1px solid #ffeaa7;
+            border-radius: 8px;
+            padding: 15px;
+            margin: 15px 0;
+            color: #856404;
+        }
+
+        .auth-note strong {
+            color: #d63031;
+        }
+
+        .auth-note.success {
+            background: #d4edda;
+            border: 1px solid #c3e6cb;
+            color: #155724;
+        }
+
+        .toc {
+            background: #f8f9fa;
+            border-radius: 10px;
+            padding: 20px;
+            margin-bottom: 30px;
+        }
+
+        .toc h3 {
+            color: #2c3e50;
+            margin-bottom: 15px;
+        }
+
+        .toc ul {
+            list-style: none;
+        }
+
+        .toc li {
+            padding: 5px 0;
+        }
+
+        .toc a {
+            color: #667eea;
+            text-decoration: none;
+            transition: color 0.3s ease;
+        }
+
+        .toc a:hover {
+            color: #764ba2;
+        }
+
+        .example-btn {
+            background: #667eea;
+            color: white;
+            border: none;
+            padding: 8px 15px;
+            border-radius: 5px;
+            cursor: pointer;
+            margin: 5px;
+            transition: all 0.3s ease;
+        }
+
+        .example-btn:hover {
+            background: #764ba2;
+            transform: translateY(-1px);
+        }
+
+        .new-features {
+            background: linear-gradient(135deg, #28a745 0%, #20c997 100%);
+            color: white;
+            padding: 25px;
+            border-radius: 15px;
+            margin-bottom: 30px;
+        }
+
+        .new-features h3 {
+            color: white;
+            margin-bottom: 15px;
+        }
+
+        @media (max-width: 768px) {
+            .header h1 {
+                font-size: 2rem;
+            }
+            
+            .container {
+                padding: 10px;
+            }
+            
+            .section {
+                padding: 20px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <a href="/api-docs" class="back-btn">← Asosiy sahifaga qaytish</a>
+        
+        <div class="header">
+            <h1>🏪 Seller Dashboard API</h1>
+            <p>Sotuvchilar uchun to'liq mahsulot va buyurtma boshqaruvi</p>
+        </div>
+
+        <div class="new-features">
+            <h3>🚀 2024 Yangilanishlar</h3>
+            <p><strong>✅ Yangilangan:</strong> Multi-language product management, Enhanced analytics, Advanced order processing, Translation management, va User preference support qo'shildi.</p>
+        </div>
+
+        <div class="stats-grid">
+            <div class="stat-card">
+                <div class="stat-number">45+</div>
+                <div class="stat-label">Seller Endpoints</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-number">Full</div>
+                <div class="stat-label">Product Control</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-number">Real-time</div>
+                <div class="stat-label">Order Tracking</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-number">Multi-lang</div>
+                <div class="stat-label">Support</div>
+            </div>
+        </div>
+
+        <div class="section toc">
+            <h3>📋 Mundarija</h3>
+            <ul>
+                <li><a href="#dashboard">Dashboard Overview</a></li>
+                <li><a href="#products">Mahsulot Boshqaruvi</a></li>
+                <li><a href="#translations">Translation Management</a></li>
+                <li><a href="#variants">Variant Boshqaruvi</a></li>
+                <li><a href="#orders">Buyurtma Boshqaruvi</a></li>
+                <li><a href="#analytics">Analytics va Hisobotlar</a></li>
+                <li><a href="#profile">Profil Boshqaruvi</a></li>
+                <li><a href="#preferences">User Preferences</a></li>
+                <li><a href="#examples">Misol Kodlar</a></li>
+            </ul>
+        </div>
+
+        <div class="auth-note">
+            <strong>⚠️ Muhim:</strong> Barcha seller API'lari faqat seller token bilan ishlaydi. 
+            <code>Authorization: Bearer {seller_token}</code> header'ini qo'shishni unutmang!
+        </div>
+
+        <!-- DASHBOARD OVERVIEW -->
+        <div class="section" id="dashboard">
+            <h2>📊 Dashboard Overview</h2>
+            <p>Sotuvchining asosiy statistikalari va umumiy ko'rinishi</p>
+
+            <div class="endpoint">
+                <span class="method get">GET</span>
+                <strong>Seller Dashboard Ma'lumotlari</strong>
+                <div class="endpoint-url">/api/seller/dashboard</div>
+                
+                <h4>Javob:</h4>
+                <div class="code-block">
+{
+  "overview": {
+    "totalProducts": 25,
+    "totalVariants": 78,
+    "totalOrders": 156,
+    "totalRevenue": 45670.50,
+    "pendingOrders": 12,
+    "completedOrders": 144,
+    "averageRating": "4.3",
+    "totalReviews": 89,
+    "lowStockProducts": 5,
+    "revenueGrowth": 15.2,
+    "activeLanguages": ["uz", "ru", "en"],
+    "preferredCurrency": "UZS"
+  },
+  "recentOrders": [...],
+  "topProducts": [...],
+  "languageStats": {
+    "uz": 60,
+    "ru": 30,
+    "en": 10
+  }
+}
+                </div>
+                <button class="example-btn" onclick="testEndpoint('/api/seller/dashboard')">Test API</button>
+            </div>
+
+            <div class="endpoint">
+                <span class="method get">GET</span>
+                <strong>Seller Sales Analytics</strong>
+                <div class="endpoint-url">/api/seller/analytics/sales?period=30</div>
+                
+                <h4>Parametrlar:</h4>
+                <ul>
+                    <li><code>period</code> - Tahlil davri (kunlarda, default: 30)</li>
+                </ul>
+                <button class="example-btn" onclick="testEndpoint('/api/seller/analytics/sales?period=7')">7 kunlik</button>
+                <button class="example-btn" onclick="testEndpoint('/api/seller/analytics/sales?period=30')">30 kunlik</button>
+            </div>
+        </div>
+
+        <!-- PRODUCTS MANAGEMENT -->
+        <div class="section" id="products">
+            <h2>🛍️ Mahsulot Boshqaruvi</h2>
+            <p>To'liq mahsulot boshqaruvi tizimi</p>
+
+            <div class="endpoint">
+                <span class="method get">GET</span>
+                <strong>Mahsulotlar Ro'yxati</strong>
+                <div class="endpoint-url">/api/seller/products?page=1&limit=10&search=shirt&category=clothing&status=active&sortBy=newest&language=uz</div>
+                
+                <h4>Parametrlar:</h4>
+                <ul>
+                    <li><code>page</code> - Sahifa raqami (default: 1)</li>
+                    <li><code>limit</code> - Sahifadagi elementlar soni (default: 10)</li>
+                    <li><code>search</code> - Qidiruv so'zi</li>
+                    <li><code>category</code> - Kategoriya nomi</li>
+                    <li><code>status</code> - active, inactive, all</li>
+                    <li><code>sortBy</code> - newest, oldest, name_asc, name_desc, price_asc, price_desc</li>
+                    <li><code>language</code> - Til kodi (uz, ru, en)</li>
+                </ul>
+                <button class="example-btn" onclick="testEndpoint('/api/seller/products')">Test API</button>
+            </div>
+
+            <div class="endpoint">
+                <span class="method get">GET</span>
+                <strong>Bitta Mahsulot</strong>
+                <div class="endpoint-url">/api/seller/products/:id?language=uz</div>
+                
+                <h4>Javob:</h4>
+                <div class="code-block">
+{
+  "id": 1,
+  "name": "Premium T-Shirt",
+  "description": "High quality cotton t-shirt",
+  "price": 25.99,
+  "discountPrice": 19.99,
+  "images": ["/uploads/tshirt1.jpg"],
+  "category": "Clothing",
+  "variants": [...],
+  "translations": {
+    "uz": {
+      "name": "Premium Ko'ylak",
+      "description": "Yuqori sifatli paxta ko'ylak"
+    },
+    "ru": {
+      "name": "Премиум Футболка",
+      "description": "Высококачественная хлопковая футболка"
+    },
+    "en": {
+      "name": "Premium T-Shirt",
+      "description": "High quality cotton t-shirt"
+    }
+  },
+  "isActive": true,
+  "createdAt": "2024-01-01T10:00:00.000Z"
+}
+                </div>
+                <button class="example-btn" onclick="testEndpoint('/api/seller/products/1')">Mahsulot tafsilotlari</button>
+            </div>
+
+            <div class="endpoint">
+                <span class="method post">POST</span>
+                <strong>Yangi Mahsulot Yaratish</strong>
+                <div class="endpoint-url">/api/seller/products</div>
+                
+                <h4>So'rov tanasi (multipart/form-data):</h4>
+                <div class="code-block">
+{
+  "name": "Premium T-Shirt",
+  "description": "High quality cotton t-shirt",
+  "shortDescription": "Comfortable cotton tee",
+  "brand": "MyBrand",
+  "categoryId": 1,
+  "tags": ["clothing", "casual", "cotton"],
+  "translations": {
+    "uz": {
+      "name": "Premium Ko'ylak",
+      "description": "Yuqori sifatli paxta ko'ylak"
+    },
+    "ru": {
+      "name": "Премиум Футболка",
+      "description": "Высококачественная хлопковая футболка"
+    }
+  },
+  "variants": [
+    {
+      "size": "M",
+      "color": "red",
+      "price": 25.99,
+      "discountPrice": 19.99,
+      "countInStock": 50,
+      "sku": "TSHIRT-M-RED"
+    }
+  ],
+  "images": [file1, file2, file3]
+}
+                </div>
+                <button class="example-btn" onclick="showCreateForm()">Yaratish Formasi</button>
+            </div>
+
+            <div class="endpoint">
+                <span class="method put">PUT</span>
+                <strong>Mahsulot Yangilash</strong>
+                <div class="endpoint-url">/api/seller/products/:id</div>
+                <button class="example-btn" onclick="testEndpoint('/api/seller/products/1', 'PUT')">Test API</button>
+            </div>
+
+            <div class="endpoint">
+                <span class="method patch">PATCH</span>
+                <strong>Mahsulot Statusini O'zgartirish</strong>
+                <div class="endpoint-url">/api/seller/products/:id/toggle-status</div>
+                <button class="example-btn" onclick="testEndpoint('/api/seller/products/1/toggle-status', 'PATCH')">Test API</button>
+            </div>
+
+            <div class="endpoint">
+                <span class="method delete">DELETE</span>
+                <strong>Mahsulot O'chirish</strong>
+                <div class="endpoint-url">/api/seller/products/:id</div>
+                <button class="example-btn" onclick="testEndpoint('/api/seller/products/1', 'DELETE')">Test API</button>
+            </div>
+        </div>
+
+        <!-- TRANSLATION MANAGEMENT -->
+        <div class="section" id="translations">
+            <h2>🌍 Translation Management</h2>
+            <p>Mahsulot tarjimalarini boshqarish</p>
+
+            <div class="endpoint">
+                <span class="method put">PUT</span>
+                <strong>Mahsulot Tarjimasini Yangilash</strong>
+                <div class="endpoint-url">/api/seller/products/:id/translations</div>
+                
+                <h4>So'rov tanasi:</h4>
+                <div class="code-block">
+{
+  "translations": {
+    "uz": {
+      "name": "Premium Ko'ylak",
+      "description": "Yuqori sifatli paxta ko'ylak",
+      "shortDescription": "Qulay paxta ko'ylak"
+    },
+    "ru": {
+      "name": "Премиум Футболка",
+      "description": "Высококачественная хлопковая футболка",
+      "shortDescription": "Удобная хлопковая футболка"
+    },
+    "en": {
+      "name": "Premium T-Shirt",
+      "description": "High quality cotton t-shirt",
+      "shortDescription": "Comfortable cotton tee"
+    }
+  }
+}
+                </div>
+                <button class="example-btn" onclick="testUpdateProductTranslations()">Tarjimani yangilash</button>
+            </div>
+
+            <div class="endpoint">
+                <span class="method get">GET</span>
+                <strong>Mahsulot Tarjimalarini Olish</strong>
+                <div class="endpoint-url">/api/seller/products/:id/translations</div>
+                
+                <h4>Javob:</h4>
+                <div class="code-block">
+{
+  "productId": 1,
+  "translations": {
+    "uz": {
+      "name": "Premium Ko'ylak",
+      "description": "Yuqori sifatli paxta ko'ylak",
+      "shortDescription": "Qulay paxta ko'ylak"
+    },
+    "ru": {
+      "name": "Премиум Футболка",
+      "description": "Высококачественная хлопковая футболка",
+      "shortDescription": "Удобная хлопковая футболка"
+    },
+    "en": {
+      "name": "Premium T-Shirt",
+      "description": "High quality cotton t-shirt",
+      "shortDescription": "Comfortable cotton tee"
+    }
+  },
+  "availableLanguages": ["uz", "ru", "en"],
+  "completedTranslations": ["uz", "ru", "en"],
+  "missingTranslations": []
+}
+                </div>
+                <button class="example-btn" onclick="testEndpoint('/api/seller/products/1/translations')">Tarjimalarni olish</button>
+            </div>
+        </div>
+
+        <!-- VARIANTS MANAGEMENT -->
+        <div class="section" id="variants">
+            <h2>🎨 Variant Boshqaruvi</h2>
+            <p>Mahsulot variantlarini boshqarish</p>
+
+            <div class="endpoint">
+                <span class="method get">GET</span>
+                <strong>Mahsulot Variantlari</strong>
+                <div class="endpoint-url">/api/variants/product/:productId</div>
+                <button class="example-btn" onclick="testEndpoint('/api/variants/product/1')">Variantlar ro'yxati</button>
+            </div>
+
+            <div class="endpoint">
+                <span class="method post">POST</span>
+                <strong>Yangi Variant Yaratish</strong>
+                <div class="endpoint-url">/api/variants</div>
+                
+                <h4>So'rov tanasi:</h4>
+                <div class="code-block">
+{
+  "productId": 1,
+  "size": "L",
+  "color": "blue",
+  "price": 29.99,
+  "discountPrice": 24.99,
+  "countInStock": 30,
+  "sku": "TSHIRT-L-BLUE",
+  "barcode": "1234567890123",
+  "weight": 0.25,
+  "dimensions": {
+    "length": 30,
+    "width": 20,
+    "height": 2
+  }
+}
+                </div>
+                <button class="example-btn" onclick="testCreateVariant()">Variant yaratish</button>
+            </div>
+
+            <div class="endpoint">
+                <span class="method put">PUT</span>
+                <strong>Variant Yangilash</strong>
+                <div class="endpoint-url">/api/variants/:id</div>
+                <button class="example-btn" onclick="testEndpoint('/api/variants/1', 'PUT')">Variant yangilash</button>
+            </div>
+
+            <div class="endpoint">
+                <span class="method delete">DELETE</span>
+                <strong>Variant O'chirish</strong>
+                <div class="endpoint-url">/api/variants/:id</div>
+                <button class="example-btn" onclick="testEndpoint('/api/variants/1', 'DELETE')">Variant o'chirish</button>
+            </div>
+        </div>
+
+        <!-- ORDERS MANAGEMENT -->
+        <div class="section" id="orders">
+            <h2>📦 Buyurtma Boshqaruvi</h2>
+            <p>Buyurtmalarni kuzatish va holat yangilash</p>
+
+            <div class="endpoint">
+                <span class="method get">GET</span>
+                <strong>Buyurtmalar Ro'yxati</strong>
+                <div class="endpoint-url">/api/seller/orders?page=1&limit=10&status=pending&search=customer&sortBy=newest</div>
+                
+                <h4>Parametrlar:</h4>
+                <ul>
+                    <li><code>status</code> - all, pending, processing, shipped, delivered, cancelled</li>
+                    <li><code>search</code> - Mijoz nomi yoki telefon raqami</li>
+                    <li><code>startDate</code> - Boshlanish sanasi (YYYY-MM-DD)</li>
+                    <li><code>endDate</code> - Tugash sanasi (YYYY-MM-DD)</li>
+                    <li><code>sortBy</code> - newest, oldest, amount_high, amount_low</li>
+                </ul>
+                <button class="example-btn" onclick="testEndpoint('/api/seller/orders')">Test API</button>
+            </div>
+
+            <div class="endpoint">
+                <span class="method get">GET</span>
+                <strong>Buyurtma Statistikalari</strong>
+                <div class="endpoint-url">/api/seller/orders/statistics</div>
+                <button class="example-btn" onclick="testEndpoint('/api/seller/orders/statistics')">Order Statistics</button>
+            </div>
+
+            <div class="endpoint">
+                <span class="method get">GET</span>
+                <strong>Bitta Buyurtma</strong>
+                <div class="endpoint-url">/api/seller/orders/:id</div>
+                <button class="example-btn" onclick="testEndpoint('/api/seller/orders/1')">Buyurtma tafsilotlari</button>
+            </div>
+
+            <div class="endpoint">
+                <span class="method patch">PATCH</span>
+                <strong>Buyurtma Holati Yangilash</strong>
+                <div class="endpoint-url">/api/seller/orders/:orderId/items/:itemId/status</div>
+                
+                <h4>So'rov tanasi:</h4>
+                <div class="code-block">
+{
+  "status": "shipped",
+  "trackingNumber": "TRK123456789",
+  "notes": "Shipped via DHL"
+}
+                </div>
+                
+                <h4>Mavjud statuslar:</h4>
+                <ul>
+                    <li><code>processing</code> - Ishlanmoqda</li>
+                    <li><code>shipped</code> - Yuborildi</li>
+                    <li><code>delivered</code> - Yetkazildi</li>
+                    <li><code>cancelled</code> - Bekor qilindi</li>
+                </ul>
+                <button class="example-btn" onclick="showStatusForm()">Status O'zgartirish</button>
+            </div>
+        </div>
+
+        <!-- USER PREFERENCES -->
+        <div class="section" id="preferences">
+            <h2>⚙️ User Preferences</h2>
+            <p>Foydalanuvchi sozlamalari va tilni boshqarish</p>
+
+            <div class="endpoint">
+                <span class="method get">GET</span>
+                <strong>Foydalanuvchi Sozlamalari</strong>
+                <div class="endpoint-url">/api/users/preferences</div>
+                
+                <h4>Javob:</h4>
+                <div class="code-block">
+{
+  "userId": 123,
+  "preferredLanguage": "uz",
+  "preferredCurrency": "UZS",
+  "settings": {
+    "notifications": {
+      "email": true,
+      "sms": false,
+      "push": true
+    },
+    "privacy": {
+      "showProfile": true,
+      "showActivity": false
+    },
+    "display": {
+      "theme": "light",
+      "itemsPerPage": 20
+    }
+  },
+  "updatedAt": "2024-01-01T12:00:00.000Z"
+}
+                </div>
+                <button class="example-btn" onclick="testEndpoint('/api/users/preferences')">Sozlamalarni olish</button>
+            </div>
+
+            <div class="endpoint">
+                <span class="method put">PUT</span>
+                <strong>Til va Valyuta Sozlamalari</strong>
+                <div class="endpoint-url">/api/users/language-currency</div>
+                
+                <h4>So'rov tanasi:</h4>
+                <div class="code-block">
+{
+  "preferredLanguage": "uz",
+  "preferredCurrency": "UZS"
+}
+                </div>
+                <button class="example-btn" onclick="testUpdateLanguageCurrency()">Til/Valyuta yangilash</button>
+            </div>
+
+            <div class="endpoint">
+                <span class="method put">PUT</span>
+                <strong>Foydalanuvchi Sozlamalarini Yangilash</strong>
+                <div class="endpoint-url">/api/users/settings</div>
+                
+                <h4>So'rov tanasi:</h4>
+                <div class="code-block">
+{
+  "settings": {
+    "notifications": {
+      "email": true,
+      "sms": false,
+      "push": true
+    },
+    "privacy": {
+      "showProfile": true,
+      "showActivity": false
+    },
+    "display": {
+      "theme": "dark",
+      "itemsPerPage": 25
+    }
+  }
+}
+                </div>
+                <button class="example-btn" onclick="testUpdateUserSettings()">Sozlamalarni yangilash</button>
+            </div>
+        </div>
+
+        <!-- ANALYTICS -->
+        <div class="section" id="analytics">
+            <h2>📈 Analytics va Hisobotlar</h2>
+            <p>Batafsil sotuv tahlili va samaradorlik ko'rsatkichlari</p>
+
+            <div class="endpoint">
+                <span class="method get">GET</span>
+                <strong>Sotuv Analytics</strong>
+                <div class="endpoint-url">/api/seller/analytics/sales?period=30</div>
+                
+                <h4>Javob:</h4>
+                <div class="code-block">
+{
+  "period": 30,
+  "dailySales": [...],
+  "topProducts": [
+    {
+      "productId": 123,
+      "productName": "Premium T-Shirt",
+      "totalSold": 45,
+      "totalRevenue": 1125.50,
+      "translations": {
+        "uz": "Premium Ko'ylak",
+        "ru": "Премиум Футболка",
+        "en": "Premium T-Shirt"
+      }
+    }
+  ],
+  "salesByCategory": [...],
+  "languageBreakdown": {
+    "uz": 60,
+    "ru": 30,
+    "en": 10
+  },
+  "currencyBreakdown": {
+    "UZS": 80,
+    "USD": 15,
+    "RUB": 5
+  }
+}
+                </div>
+                <button class="example-btn" onclick="testEndpoint('/api/seller/analytics/sales?period=7')">
+7 kunlik</button>
+                <button class="example-btn" onclick="testEndpoint('/api/seller/analytics/sales?period=30')">30 kunlik</button>
+            </div>
+
+            <div class="endpoint">
+                <span class="method get">GET</span>
+                <strong>Mahsulot Analytics</strong>
+                <div class="endpoint-url">/api/seller/analytics/products</div>
+                
+                <h4>Javob:</h4>
+                <div class="code-block">
+{
+  "productPerformance": [...],
+  "lowStockAlerts": [
+    {
+      "variantId": 456,
+      "productName": "Premium T-Shirt",
+      "sku": "TSHIRT-M-RED",
+      "currentStock": 3,
+      "minStockLevel": 5
+    }
+  ],
+  "translationStatus": {
+    "completed": 15,
+    "partial": 3,
+    "missing": 2
+  }
+}
+                </div>
+                <button class="example-btn" onclick="testEndpoint('/api/seller/analytics/products')">Test API</button>
+            </div>
+
+            <div class="endpoint">
+                <span class="method get">GET</span>
+                <strong>Buyurtma Analytics</strong>
+                <div class="endpoint-url">/api/seller/analytics/orders?period=30</div>
+                <button class="example-btn" onclick="testEndpoint('/api/seller/analytics/orders?period=30')">Test API</button>
+            </div>
+        </div>
+
+        <!-- PROFILE MANAGEMENT -->
+        <div class="section" id="profile">
+            <h2>👤 Profil Boshqaruvi</h2>
+            <p>Seller profili va do'kon ma'lumotlarini boshqarish</p>
+
+            <div class="endpoint">
+                <span class="method get">GET</span>
+                <strong>Profil Ma'lumotlari</strong>
+                <div class="endpoint-url">/api/users/profile</div>
+                <button class="example-btn" onclick="testEndpoint('/api/users/profile')">Profil ko'rish</button>
+            </div>
+
+            <div class="endpoint">
+                <span class="method put">PUT</span>
+                <strong>Profil Yangilash</strong>
+                <div class="endpoint-url">/api/users/profile</div>
+                
+                <h4>So'rov tanasi:</h4>
+                <div class="code-block">
+{
+  "fullName": "John Doe",
+  "phoneNumber": "+998901234567"
+}
+                </div>
+                <button class="example-btn" onclick="testUpdateProfile()">Profil yangilash</button>
+            </div>
+
+            <div class="endpoint">
+                <span class="method put">PUT</span>
+                <strong>Seller Ma'lumotlarini Yangilash</strong>
+                <div class="endpoint-url">/api/users/profile/seller-info</div>
+                
+                <h4>So'rov tanasi:</h4>
+                <div class="code-block">
+{
+  "shopName": "My Awesome Shop",
+  "shopDescription": "We sell high quality products",
+  "shopAddress": "123 Main Street, City"
+}
+                </div>
+                <button class="example-btn" onclick="testUpdateSellerInfo()">Seller ma'lumotlari</button>
+            </div>
+
+            <div class="endpoint">
+                <span class="method put">PUT</span>
+                <strong>Parol O'zgartirish</strong>
+                <div class="endpoint-url">/api/users/profile/password</div>
+                
+                <h4>So'rov tanasi:</h4>
+                <div class="code-block">
+{
+  "oldPassword": "current_password",
+  "newPassword": "new_password"
+}
+                </div>
+                <button class="example-btn" onclick="testChangePassword()">Parol o'zgartirish</button>
+            </div>
+
+            <div class="endpoint">
+                <span class="method put">PUT</span>
+                <strong>Profil Rasmini Yangilash</strong>
+                <div class="endpoint-url">/api/users/profile/image</div>
+                
+                <h4>So'rov tanasi (multipart/form-data):</h4>
+                <div class="code-block">
+{
+  "profileImage": file
+}
+                </div>
+                <button class="example-btn" onclick="alert('Profil rasmini yangilash uchun multipart/form-data formatida so\'rov yuboring.')">Rasm yangilash</button>
+            </div>
+        </div>
+
+        <!-- EXAMPLES -->
+        <div class="section" id="examples">
+            <h2>💻 Misol Kodlar</h2>
+            
+            <h3>JavaScript (Fetch API)</h3>
+            <div class="code-block">
+// Seller dashboard ma'lumotlarini olish
+const getSellerDashboard = async () => {
+  try {
+    const response = await fetch('/api/seller/dashboard', {
+      method: 'GET',
+      headers: {
+        'Authorization': `Bearer ${sellerToken}`,
+        'Content-Type': 'application/json'
+      }
+    });
+    
+    const data = await response.json();
+    console.log('Dashboard data:', data);
+  } catch (error) {
+    console.error('Error:', error);
+  }
+};
+
+// Mahsulot yaratish (multi-language)
+const createProduct = async (productData) => {
+  const formData = new FormData();
+  
+  // Mahsulot ma'lumotlarini qo'shish
+  formData.append('name', productData.name);
+  formData.append('description', productData.description);
+  formData.append('categoryId', productData.categoryId);
+  formData.append('variants', JSON.stringify(productData.variants));
+  
+  // Tarjimalarni qo'shish
+  formData.append('translations', JSON.stringify(productData.translations));
+  
+  // Rasmlarni qo'shish
+  productData.images.forEach(image => {
+    formData.append('images', image);
+  });
+  
+  try {
+    const response = await fetch('/api/seller/products', {
+      method: 'POST',
+      headers: {
+        'Authorization': `Bearer ${sellerToken}`
+      },
+      body: formData
+    });
+    
+    const result = await response.json();
+    console.log('Product created:', result);
+  } catch (error) {
+    console.error('Error:', error);
+  }
+};
+
+// Mahsulot tarjimasini yangilash
+const updateProductTranslations = async (productId, translations) => {
+  try {
+    const response = await fetch(`/api/seller/products/${productId}/translations`, {
+      method: 'PUT',
+      headers: {
+        'Authorization': `Bearer ${sellerToken}`,
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify({ translations })
+    });
+    
+    const result = await response.json();
+    console.log('Translations updated:', result);
+  } catch (error) {
+    console.error('Error:', error);
+  }
+};
+
+// Foydalanuvchi til va valyuta sozlamalarini yangilash
+const updateLanguageCurrency = async (language, currency) => {
+  try {
+    const response = await fetch('/api/users/language-currency', {
+      method: 'PUT',
+      headers: {
+        'Authorization': `Bearer ${sellerToken}`,
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify({
+        preferredLanguage: language,
+        preferredCurrency: currency
+      })
+    });
+    
+    const result = await response.json();
+    console.log('Language/Currency updated:', result);
+  } catch (error) {
+    console.error('Error:', error);
+  }
+};
+
+// Variant yaratish
+const createVariant = async (variantData) => {
+  try {
+    const response = await fetch('/api/variants', {
+      method: 'POST',
+      headers: {
+        'Authorization': `Bearer ${sellerToken}`,
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify(variantData)
+    });
+    
+    const result = await response.json();
+    console.log('Variant created:', result);
+  } catch (error) {
+    console.error('Error:', error);
+  }
+};
+
+// Buyurtma holati yangilash
+const updateOrderStatus = async (orderId, itemId, status, trackingNumber) => {
+  try {
+    const response = await fetch(`/api/seller/orders/${orderId}/items/${itemId}/status`, {
+      method: 'PATCH',
+      headers: {
+        'Authorization': `Bearer ${sellerToken}`,
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify({
+        status,
+        trackingNumber,
+        notes: 'Status updated by seller'
+      })
+    });
+    
+    const result = await response.json();
+    console.log('Status updated:', result);
+  } catch (error) {
+    console.error('Error:', error);
+  }
+};
+            </div>
+
+            <h3>cURL</h3>
+            <div class="code-block">
+# Dashboard ma'lumotlari
+curl -X GET "http://localhost:5000/api/seller/dashboard" \
+  -H "Authorization: Bearer YOUR_SELLER_TOKEN"
+
+# Mahsulotlar ro'yxati (til bilan)
+curl -X GET "http://localhost:5000/api/seller/products?language=uz&page=1&limit=10" \
+  -H "Authorization: Bearer YOUR_SELLER_TOKEN"
+
+# Mahsulot tarjimasini yangilash
+curl -X PUT "http://localhost:5000/api/seller/products/1/translations" \
+  -H "Authorization: Bearer YOUR_SELLER_TOKEN" \
+  -H "Content-Type: application/json" \
+  -d '{
+    "translations": {
+      "uz": {"name": "Premium Ko'\''ylak", "description": "Yuqori sifatli paxta ko'\''ylak"},
+      "ru": {"name": "Премиум Футболка", "description": "Высококачественная хлопковая футболка"},
+      "en": {"name": "Premium T-Shirt", "description": "High quality cotton t-shirt"}
+    }
+  }'
+
+# Til va valyuta sozlamalarini yangilash
+curl -X PUT "http://localhost:5000/api/users/language-currency" \
+  -H "Authorization: Bearer YOUR_SELLER_TOKEN" \
+  -H "Content-Type: application/json" \
+  -d '{
+    "preferredLanguage": "uz",
+    "preferredCurrency": "UZS"
+  }'
+
+# Variant yaratish
+curl -X POST "http://localhost:5000/api/variants" \
+  -H "Authorization: Bearer YOUR_SELLER_TOKEN" \
+  -H "Content-Type: application/json" \
+  -d '{
+    "productId": 1,
+    "size": "L",
+    "color": "blue",
+    "price": 29.99,
+    "countInStock": 30,
+    "sku": "TSHIRT-L-BLUE"
+  }'
+
+# Buyurtma holati yangilash
+curl -X PATCH "http://localhost:5000/api/seller/orders/123/items/456/status" \
+  -H "Authorization: Bearer YOUR_SELLER_TOKEN" \
+  -H "Content-Type: application/json" \
+  -d '{"status": "shipped", "trackingNumber": "TRK123456"}'
+            </div>
+        </div>
+
+        <div class="section">
+            <h2>🔐 Xavfsizlik</h2>
+            <div class="auth-note success">
+                <strong>Seller Privileges:</strong> Seller faqat o'z mahsulotlari va buyurtmalarini ko'ra oladi.
+            </div>
+            
+            <h3>Token olish:</h3>
+            <div class="code-block">
+POST /api/auth/login
+{
+  "phoneNumber": "seller_phone",
+  "password": "seller_password"
+}
+
+// Javob:
+{
+  "accessToken": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9...",
+  "status": "seller"
+}
+            </div>
+
+            <div class="features-grid">
+                <div class="feature-card">
+                    <h4>🛡️ Xavfsiz Autentifikatsiya</h4>
+                    <p>JWT token asosida xavfsiz kirish tizimi</p>
+                </div>
+                <div class="feature-card">
+                    <h4>🔒 Shaxsiy Ma'lumotlar</h4>
+                    <p>Faqat o'z mahsulot va buyurtmalariga ruxsat</p>
+                </div>
+                <div class="feature-card">
+                    <h4>📊 To'liq Nazorat</h4>
+                    <p>Mahsulot va buyurtmalarni to'liq boshqarish</p>
+                </div>
+                <div class="feature-card">
+                    <h4>📈 Real-time Analytics</h4>
+                    <p>Jonli sotuv statistikasi va hisobotlar</p>
+                </div>
+                <div class="feature-card">
+                    <h4>🌍 Multi-language</h4>
+                    <p>Ko'p tillilik va tarjima boshqaruvi</p>
+                </div>
+                <div class="feature-card">
+                    <h4>💱 Multi-currency</h4>
+                    <p>Valyuta sozlamalari va konvertatsiya</p>
+                </div>
+            </div>
+        </div>
+
+        <div style="text-align: center; color: white; padding: 20px; opacity: 0.8;">
+            <p>&copy; 2024 Market App Seller Panel. Barcha huquqlar himoyalangan.</p>
+            <p>Professional E-commerce Backend with Multi-language & Multi-currency Support</p>
+        </div>
+    </div>
+
+    <script>
+        function testEndpoint(url, method = 'GET') {
+            const token = prompt('Seller token kiriting:');
+            if (!token) return;
+
+            const options = {
+                method: method,
+                headers: {
+                    'Authorization': `Bearer ${token}`,
+                    'Content-Type': 'application/json'
+                }
+            };
+
+            fetch(url, options)
+            .then(response => response.json())
+            .then(data => {
+                console.log('API Response:', data);
+                alert('API javob console da ko\'ring (F12)');
+            })
+            .catch(error => {
+                console.error('Error:', error);
+                alert('Xatolik yuz berdi. Console da ko\'ring.');
+            });
+        }
+
+        function showCreateForm() {
+            alert('Mahsulot yaratish uchun multipart/form-data formatida so\'rov yuboring. Misol kodlarni ko\'ring.');
+        }
+
+        function testCreateVariant() {
+            const token = prompt('Seller token kiriting:');
+            if (!token) return;
+            
+            const productId = prompt('Product ID kiriting:') || '1';
+            const size = prompt('Size kiriting:') || 'M';
+            const color = prompt('Color kiriting:') || 'red';
+            const price = prompt('Price kiriting:') || '25.99';
+            const stock = prompt('Stock kiriting:') || '50';
+
+            const variantData = {
+                productId: parseInt(productId),
+                size: size,
+                color: color,
+                price: parseFloat(price),
+                countInStock: parseInt(stock),
+                sku: `PRODUCT-${size.toUpperCase()}-${color.toUpperCase()}`
+            };
+
+            fetch('/api/variants', {
+                method: 'POST',
+                headers: {
+                    'Authorization': `Bearer ${token}`,
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify(variantData)
+            })
+            .then(response => response.json())
+            .then(data => {
+                console.log('Create Variant Response:', data);
+                alert('Javob console da ko\'ring (F12)');
+            })
+            .catch(error => {
+                console.error('Error:', error);
+                alert('Xatolik yuz berdi. Console da ko\'ring.');
+            });
+        }
+
+        function testUpdateProductTranslations() {
+            const token = prompt('Seller token kiriting:');
+            if (!token) return;
+            
+            const productId = prompt('Product ID kiriting:') || '1';
+            
+            const translationsData = {
+                translations: {
+                    uz: {
+                        name: "Premium Ko'ylak",
+                        description: "Yuqori sifatli paxta ko'ylak",
+                        shortDescription: "Qulay paxta ko'ylak"
+                    },
+                    ru: {
+                        name: "Премиум Футболка",
+                        description: "Высококачественная хлопковая футболка",
+                        shortDescription: "Удобная хлопковая футболка"
+                    },
+                    en: {
+                        name: "Premium T-Shirt",
+                        description: "High quality cotton t-shirt",
+                        shortDescription: "Comfortable cotton tee"
+                    }
+                }
+            };
+
+            fetch(`/api/seller/products/${productId}/translations`, {
+                method: 'PUT',
+                headers: {
+                    'Authorization': `Bearer ${token}`,
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify(translationsData)
+            })
+            .then(response => response.json())
+            .then(data => {
+                console.log('Update Translations Response:', data);
+                alert('Javob console da ko\'ring (F12)');
+            })
+            .catch(error => {
+                console.error('Error:', error);
+                alert('Xatolik yuz berdi. Console da ko\'ring.');
+            });
+        }
+
+        function testUpdateLanguageCurrency() {
+            const token = prompt('Seller token kiriting:');
+            if (!token) return;
+            
+            const language = prompt('Til kodini kiriting (uz, ru, en):') || 'uz';
+            const currency = prompt('Valyuta kodini kiriting (UZS, USD, RUB):') || 'UZS';
+
+            const preferencesData = {
+                preferredLanguage: language,
+                preferredCurrency: currency
+            };
+
+            fetch('/api/users/language-currency', {
+                method: 'PUT',
+                headers: {
+                    'Authorization': `Bearer ${token}`,
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify(preferencesData)
+            })
+            .then(response => response.json())
+            .then(data => {
+                console.log('Update Language/Currency Response:', data);
+                alert('Javob console da ko\'ring (F12)');
+            })
+            .catch(error => {
+                console.error('Error:', error);
+                alert('Xatolik yuz berdi. Console da ko\'ring.');
+            });
+        }
+
+        function testUpdateUserSettings() {
+            const token = prompt('Seller token kiriting:');
+            if (!token) return;
+            
+            const settingsData = {
+                settings: {
+                    notifications: {
+                        email: true,
+                        sms: false,
+                        push: true
+                    },
+                    privacy: {
+                        showProfile: true,
+                        showActivity: false
+                    },
+                    display: {
+                        theme: "dark",
+                        itemsPerPage: 25
+                    }
+                }
+            };
+
+            fetch('/api/users/settings', {
+                method: 'PUT',
+                headers: {
+                    'Authorization': `Bearer ${token}`,
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify(settingsData)
+            })
+            .then(response => response.json())
+            .then(data => {
+                console.log('Update Settings Response:', data);
+                alert('Javob console da ko\'ring (F12)');
+            })
+            .catch(error => {
+                console.error('Error:', error);
+                alert('Xatolik yuz berdi. Console da ko\'ring.');
+            });
+        }
+
+        function showStatusForm() {
+            const token = prompt('Seller token kiriting:');
+            if (!token) return;
+            
+            const orderId = prompt('Order ID kiriting:');
+            const itemId = prompt('Item ID kiriting:');
+            const status = prompt('Yangi status kiriting (processing, shipped, delivered, cancelled):');
+            const trackingNumber = prompt('Tracking number kiriting (ixtiyoriy):') || '';
+            
+            if (orderId && itemId && status) {
+                const statusData = {
+                    status: status,
+                    trackingNumber: trackingNumber,
+                    notes: 'Status updated by seller'
+                };
+
+                fetch(`/api/seller/orders/${orderId}/items/${itemId}/status`, {
+                    method: 'PATCH',
+                    headers: {
+                        'Authorization': `Bearer ${token}`,
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify(statusData)
+                })
+                .then(response => response.json())
+                .then(data => {
+                    console.log('Update Status Response:', data);
+                    alert('Javob console da ko\'ring (F12)');
+                })
+                .catch(error => {
+                    console.error('Error:', error);
+                    alert('Xatolik yuz berdi. Console da ko\'ring.');
+                });
+            }
+        }
+
+        function testUpdateProfile() {
+            const token = prompt('Seller token kiriting:');
+            if (!token) return;
+            
+            const fullName = prompt('To\'liq ismingizni kiriting:') || 'John Doe';
+            const phoneNumber = prompt('Telefon raqamingizni kiriting:') || '+998901234567';
+
+            const profileData = {
+                fullName: fullName,
+                phoneNumber: phoneNumber
+            };
+
+            fetch('/api/users/profile', {
+                method: 'PUT',
+                headers: {
+                    'Authorization': `Bearer ${token}`,
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify(profileData)
+            })
+            .then(response => response.json())
+            .then(data => {
+                console.log('Update Profile Response:', data);
+                alert('Javob console da ko\'ring (F12)');
+            })
+            .catch(error => {
+                console.error('Error:', error);
+                alert('Xatolik yuz berdi. Console da ko\'ring.');
+            });
+        }
+
+        function testUpdateSellerInfo() {
+            const token = prompt('Seller token kiriting:');
+            if (!token) return;
+            
+            const shopName = prompt('Do\'kon nomini kiriting:') || 'My Shop';
+            const shopDescription = prompt('Do\'kon tavsifini kiriting:') || 'We sell quality products';
+            const shopAddress = prompt('Do\'kon manzilini kiriting:') || '123 Main Street';
+
+            const sellerData = {
+                shopName: shopName,
+                shopDescription: shopDescription,
+                shopAddress: shopAddress
+            };
+
+            fetch('/api/users/profile/seller-info', {
+                method: 'PUT',
+                headers: {
+                    'Authorization': `Bearer ${token}`,
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify(sellerData)
+            })
+            .then(response => response.json())
+            .then(data => {
+                console.log('Update Seller Info Response:', data);
+                alert('Javob console da ko\'ring (F12)');
+            })
+            .catch(error => {
+                console.error('Error:', error);
+                alert('Xatolik yuz berdi. Console da ko\'ring.');
+            });
+        }
+
+        function testChangePassword() {
+            const token = prompt('Seller token kiriting:');
+            if (!token) return;
+            
+            const oldPassword = prompt('Hozirgi parolingizni kiriting:');
+            const newPassword = prompt('Yangi parolingizni kiriting:');
+            
+            if (!oldPassword || !newPassword) {
+                alert('Ikkala parolni ham kiriting!');
+                return;
+            }
+
+            const passwordData = {
+                oldPassword: oldPassword,
+                newPassword: newPassword
+            };
+
+            fetch('/api/users/profile/password', {
+                method: 'PUT',
+                headers: {
+                    'Authorization': `Bearer ${token}`,
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify(passwordData)
+            })
+            .then(response => response.json())
+            .then(data => {
+                console.log('Change Password Response:', data);
+                alert('Javob console da ko\'ring (F12)');
+            })
+            .catch(error => {
+                console.error('Error:', error);
+                alert('Xatolik yuz berdi. Console da ko\'ring.');
+            });
+        }
+
+        // Smooth scrolling for anchor links
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                e.preventDefault();
+                const target = document.querySelector(this.getAttribute('href'));
+                if (target) {
+                    target.scrollIntoView({
+                        behavior: 'smooth',
+                        block: 'start'
+                    });
+                }
+            });
+        });
+
+        // Add animation on scroll
+        const observerOptions = {
+            threshold: 0.1,
+            rootMargin: '0px 0px -50px 0px'
+        };
+
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.style.opacity = '1';
+                    entry.target.style.transform = 'translateY(0)';
+                }
+            });
+        }, observerOptions);
+
+        document.querySelectorAll('.section').forEach(section => {
+            section.style.opacity = '0';
+            section.style.transform = 'translateY(20px)';
+            section.style.transition = 'opacity 0.6s ease, transform 0.6s ease';
+            observer.observe(section);
+        });
+    </script>
+</body>
+</html>
